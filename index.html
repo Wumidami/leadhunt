@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadHunt — Web Design Prospector</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#1a1d27;--bg3:#252836;--bg4:#2f3347;
+  --acc:#f97316;--acc2:#fb923c;
+  --txt:#f1f0ec;--txt2:#9a9aaa;--txt3:#6b6b7b;
+  --green:#22c55e;--red:#ef4444;--yellow:#eab308;--blue:#3b82f6;
+  --border:#2f3347;
+}
+body{font-family:'Courier New',monospace;background:var(--bg);color:var(--txt);font-size:13px;min-height:100vh}
+.app{max-width:980px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.logo{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+.logo span{color:var(--acc)}
+.logo sub{font-size:10px;color:var(--txt3);font-weight:400;display:block;margin-top:-2px}
+.header-actions{display:flex;gap:8px}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.5rem}
+.stat{background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:12px 14px}
+.stat-n{font-size:24px;font-weight:700}
+.stat-l{font-size:11px;color:var(--txt2);margin-top:2px}
+.btn{background:var(--acc);border:none;border-radius:6px;color:#fff;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;padding:9px 18px;letter-spacing:0.5px;transition:background .15s}
+.btn:hover{background:var(--acc2)}
+.btn-ghost{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:7px 12px;transition:all .15s}
+.btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
+.btn-sm{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:7px 14px;transition:all .15s}
+.btn-sm:hover{border-color:var(--green);color:var(--green)}
+input,select,textarea{background:var(--bg2);border:0.5px solid var(--border);border-radius:6px;color:var(--txt);padding:9px 12px;font-family:inherit;font-size:12px;width:100%;transition:border-color .15s}
+input::placeholder,textarea::placeholder{color:var(--txt3)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+select option{background:var(--bg2)}
+.tabs{display:flex;gap:2px;margin-bottom:1rem;border-bottom:1px solid var(--border)}
+.tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:12px;padding:7px 16px;margin-bottom:-1px;transition:all .15s}
+.tab.active{border-bottom-color:var(--acc);color:var(--acc)}
+.tab:hover:not(.active){color:var(--txt)}
+.page{display:none}.page.active{display:block}
+.search-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px}
+.filter-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.25rem}
+.add-form{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:20px;margin-bottom:1.5rem;display:none}
+.add-form.open{display:block}
+.form-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.section-hd{font-size:11px;font-weight:700;color:var(--acc);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.fg4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.label{font-size:11px;color:var(--txt2);margin-bottom:4px}
+.close-btn{background:none;border:none;color:var(--txt2);cursor:pointer;font-size:22px;line-height:1;padding:0}
+.close-btn:hover{color:var(--txt)}
+.issue-checks{display:flex;flex-wrap:wrap;gap:8px}
+.issue-checks label{display:flex;align-items:center;gap:5px;font-size:11px;cursor:pointer;color:var(--txt2)}
+.issue-checks label:hover{color:var(--txt)}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;padding-top:14px;border-top:0.5px solid var(--border)}
+.leads-grid{display:flex;flex-direction:column;gap:8px}
+.lead-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .15s,background .15s}
+.lead-card:hover{border-color:var(--acc)}
+.lead-card.active{border-color:var(--acc);background:var(--bg3)}
+.lead-top{display:flex;justify-content:space-between;align-items:flex-start}
+.biz-name{font-size:15px;font-weight:700}
+.biz-sub{font-size:11px;color:var(--txt2);margin-top:3px}
+.badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.badge{border-radius:4px;font-size:10px;font-weight:700;padding:2px 7px;letter-spacing:0.3px}
+.b-red{background:#7f1d1d;color:#fca5a5}
+.b-yellow{background:#713f12;color:#fde68a}
+.b-green{background:#14532d;color:#86efac}
+.b-blue{background:#1e3a5f;color:#93c5fd}
+.b-purple{background:#3b0764;color:#d8b4fe}
+.b-gray{background:var(--bg4);color:var(--txt2)}
+.lead-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--txt2);margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)}
+.score-ring{width:44px;height:44px;flex-shrink:0}
+.detail-panel{background:var(--bg2);border:0.5px solid var(--acc);border-radius:10px;padding:20px;margin-bottom:1rem}
+.detail-title{font-size:18px;font-weight:700;margin-bottom:4px}
+.detail-sub{font-size:12px;color:var(--txt2);margin-bottom:16px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+.detail-field{background:var(--bg3);border-radius:6px;padding:10px 12px}
+.field-label{font-size:10px;color:var(--txt2);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.field-val{font-size:13px;font-weight:500;word-break:break-all}
+.issues-wrap{margin-bottom:18px}
+.issue-item{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;background:var(--bg3);border-radius:6px;margin-bottom:5px;font-size:12px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.score-bar{height:4px;border-radius:2px;background:var(--bg4);margin-top:8px}
+.score-fill{height:100%;border-radius:2px;transition:width .4s}
+.pitch-box{background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:14px;font-size:12px;line-height:1.8;color:var(--txt2);margin-bottom:10px;white-space:pre-line}
+.pitch-actions{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+.copy-btn{background:var(--bg4);border:none;border-radius:5px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:6px 12px;transition:all .15s}
+.copy-btn:hover{color:var(--acc)}
+.wa-link{font-size:11px;color:var(--green);text-decoration:none}
+.wa-link:hover{text-decoration:underline}
+.notes-area{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt);font-family:inherit;font-size:12px;padding:10px;resize:vertical;min-height:64px}
+.detail-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:0.5px solid var(--border)}
+.status-sel{background:var(--bg3);border:0.5px solid var(--border);border-radius:5px;color:var(--txt);font-family:inherit;font-size:11px;padding:5px 8px}
+.empty{text-align:center;padding:3rem;color:var(--txt2)}
+.empty-icon{font-size:36px;margin-bottom:10px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:9px 18px;border-radius:6px;font-size:12px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9999}
+.toast.show{opacity:1}
+
+/* Niche Browser */
+.niche-filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.niche-filter-btn{background:var(--bg3);border:0.5px solid var(--border);border-radius:20px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:5px 14px;transition:all .15s}
+.niche-filter-btn.active,.niche-filter-btn:hover{background:var(--acc);border-color:var(--acc);color:#fff}
+.niche-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.niche-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all .15s}
+.niche-card:hover{border-color:var(--acc);background:var(--bg3)}
+.niche-card.selected{border-color:var(--acc);background:var(--bg3)}
+.niche-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.niche-cat{font-size:10px;color:var(--acc);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.niche-why{font-size:11px;color:var(--txt2);line-height:1.5}
+.niche-ticket{font-size:10px;color:var(--green);margin-top:6px;font-weight:700}
+
+/* Region Browser */
+.region-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.region-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all .15s}
+.region-card:hover{border-color:var(--blue);background:var(--bg3)}
+.region-card.selected{border-color:var(--blue);background:var(--bg3)}
+.region-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.region-country{font-size:10px;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.region-profile{font-size:11px;color:var(--txt2);line-height:1.5}
+
+/* query generator */
+.qgen-box{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:18px;margin-bottom:1rem}
+.query-list{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.query-item{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;font-family:'Courier New',monospace}
+.query-text{color:var(--yellow);flex:1}
+.query-copy{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:11px;padding:3px 8px;font-family:inherit}
+.query-copy:hover{color:var(--acc)}
+
+/* Nav */
+.nav{display:flex;gap:2px;margin-bottom:1.5rem;background:var(--bg2);border:0.5px solid var(--border);border-radius:8px;padding:4px}
+.nav-btn{background:none;border:none;border-radius:5px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:12px;padding:7px 16px;transition:all .15s;flex:1}
+.nav-btn.active{background:var(--bg4);color:var(--txt)}
+.nav-btn:hover:not(.active){color:var(--txt)}
+
+@media(max-width:680px){
+  .stats-bar{grid-template-columns:1fr 1fr}
+  .search-row{grid-template-columns:1fr}
+  .filter-row{grid-template-columns:1fr 1fr}
+  .fg2,.fg3,.fg4{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr 1fr}
+  .niche-grid,.region-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <div class="logo">LEAD<span>HUNT</span><sub>Web Design Prospector · Pdified</sub></div>
+  <div class="header-actions">
+    <button class="btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="btn" onclick="showPage('leads');toggleForm()">+ Add Lead</button>
+  </div>
+</div>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showPage('leads',this)">🎯 My Leads</button>
+  <button class="nav-btn" onclick="showPage('niches',this)">📋 Niche Browser</button>
+  <button class="nav-btn" onclick="showPage('regions',this)">🗺 Region Browser</button>
+  <button class="nav-btn" onclick="showPage('queries',this)">🔍 Search Queries</button>
+</div>
+
+<!-- ===== LEADS PAGE ===== -->
+<div id="page-leads" class="page active">
+
+<div class="add-form" id="addForm">
+  <div class="form-header">
+    <div class="section-hd" style="margin:0">Add New Prospect</div>
+    <button class="close-btn" onclick="toggleForm()">×</button>
+  </div>
+  <div class="fg2">
+    <div><div class="label">Business Name *</div><input id="f-name" placeholder="e.g. Eko Kitchen"></div>
+    <div><div class="label">Industry / Niche *</div>
+      <select id="f-industry"><option value="">Select or type below...</option></select>
+    </div>
+  </div>
+  <div class="fg3">
+    <div><div class="label">Phone</div><input id="f-phone" placeholder="0801 234 5678"></div>
+    <div><div class="label">WhatsApp</div><input id="f-whatsapp" placeholder="If different from phone"></div>
+    <div><div class="label">Email</div><input id="f-email" placeholder="info@business.com"></div>
+  </div>
+  <div class="fg4">
+    <div><div class="label">Country</div>
+      <select id="f-country" onchange="updateRegionDropdown()">
+        <option value="">Select...</option>
+        <option>Nigeria</option><option>USA</option><option>Canada</option>
+        <option>UK</option><option>Australia</option><option>Other</option>
+      </select>
+    </div>
+    <div><div class="label">City / Region</div><input id="f-city" placeholder="e.g. Lagos, Flathead Valley"></div>
+    <div><div class="label">Area / LGA / District</div><input id="f-area" placeholder="e.g. Victoria Island"></div>
+    <div><div class="label">Full Address</div><input id="f-address" placeholder="12 Broad St"></div>
+  </div>
+  <div class="fg4">
+    <div><div class="label">Website URL</div><input id="f-website" placeholder="www.site.com or leave blank"></div>
+    <div><div class="label">Platform</div>
+      <select id="f-platform">
+        <option value="">Unknown</option>
+        <option>No website</option><option>WordPress</option><option>Wix</option>
+        <option>Blogspot</option><option>Joomla</option><option>Custom/Static</option><option>Other</option>
+      </select>
+    </div>
+    <div><div class="label">Last Updated</div>
+      <select id="f-lastupdated">
+        <option value="">Unknown</option>
+        <option>No website</option><option>Before 2015</option>
+        <option>2015–2018</option><option>2019–2021</option><option>2022+</option>
+      </select>
+    </div>
+    <div><div class="label">Source</div>
+      <select id="f-source">
+        <option>Google Maps</option><option>Facebook</option><option>Instagram</option>
+        <option>Referral</option><option>Cold Walk-in</option><option>Ugly Site Scraper</option><option>Other</option>
+      </select>
+    </div>
+  </div>
+  <div><div class="label">Google Maps Link</div><input id="f-gmaps" placeholder="https://maps.google.com/..." style="margin-bottom:12px"></div>
+  <div style="margin-bottom:14px">
+    <div class="label" style="margin-bottom:8px">Site Issues (check all that apply)</div>
+    <div class="issue-checks" id="issueChecks">
+      <label><input type="checkbox" value="No website"> No website</label>
+      <label><input type="checkbox" value="Not mobile-friendly"> Not mobile-friendly</label>
+      <label><input type="checkbox" value="Very slow loading"> Very slow loading</label>
+      <label><input type="checkbox" value="No SSL (http://)"> No SSL</label>
+      <label><input type="checkbox" value="Poor SEO"> Poor SEO</label>
+      <label><input type="checkbox" value="Broken links/pages"> Broken links</label>
+      <label><input type="checkbox" value="Outdated design"> Outdated design</label>
+      <label><input type="checkbox" value="No contact form"> No contact form</label>
+      <label><input type="checkbox" value="No Google listing"> No Google listing</label>
+      <label><input type="checkbox" value="No social media"> No social media</label>
+      <label><input type="checkbox" value="No booking system"> No booking system</label>
+      <label><input type="checkbox" value="No portfolio/gallery"> No portfolio/gallery</label>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button class="btn-ghost" onclick="toggleForm()">Cancel</button>
+    <button class="btn" onclick="addLead()">Save Lead</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="setTab('all',this)">All</button>
+  <button class="tab" onclick="setTab('new',this)">New</button>
+  <button class="tab" onclick="setTab('contacted',this)">Contacted</button>
+  <button class="tab" onclick="setTab('follow-up',this)">Follow-Up</button>
+  <button class="tab" onclick="setTab('closed',this)">Closed ✓</button>
+</div>
+
+<div class="search-row">
+  <input id="searchInput" placeholder="Search name, industry, area, city, country..." oninput="render()">
+  <select id="countryFilter" onchange="render()">
+    <option value="">All Countries</option>
+    <option>Nigeria</option><option>USA</option><option>Canada</option><option>UK</option><option>Australia</option>
+  </select>
+  <select id="sortBy" onchange="render()" style="min-width:150px">
+    <option value="score-desc">Highest Score</option>
+    <option value="score-asc">Lowest Score</option>
+    <option value="name-asc">Name A→Z</option>
+    <option value="date-desc">Newest First</option>
+  </select>
+</div>
+<div class="filter-row">
+  <select id="industryFilter" onchange="render()">
+    <option value="">All Industries</option>
+  </select>
+  <select id="sourceFilter" onchange="render()">
+    <option value="">All Sources</option>
+    <option>Google Maps</option><option>Facebook</option><option>Instagram</option>
+    <option>Referral</option><option>Cold Walk-in</option><option>Ugly Site Scraper</option>
+  </select>
+  <select id="platformFilter" onchange="render()">
+    <option value="">All Platforms</option>
+    <option>No website</option><option>WordPress</option><option>Wix</option>
+    <option>Blogspot</option><option>Joomla</option><option>Custom/Static</option>
+  </select>
+  <select id="issueFilter" onchange="render()">
+    <option value="">Any Issue</option>
+    <option>No website</option><option>Not mobile-friendly</option><option>No SSL (http://)</option>
+    <option>Poor SEO</option><option>Outdated design</option><option>No booking system</option><option>No portfolio/gallery</option>
+  </select>
+  <select id="scoreFilter" onchange="render()">
+    <option value="">Any Score</option>
+    <option value="hot">🔥 Hot (80+)</option>
+    <option value="warm">🌤 Warm (50–79)</option>
+    <option value="cold">🧊 Cold (&lt;50)</option>
+  </select>
+</div>
+
+<div class="detail-panel" id="detailPanel" style="display:none"></div>
+<div class="leads-grid" id="leadsGrid"></div>
+</div>
+
+<!-- ===== NICHES PAGE ===== -->
+<div id="page-niches" class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:3px">50 Underrated Niche Businesses</div>
+      <div style="font-size:11px;color:var(--txt2)">Click any niche to pre-fill a new lead form · High-ticket, low-competition targets</div>
+    </div>
+    <input id="nicheSearch" placeholder="Search niches..." style="width:200px" oninput="renderNiches()">
+  </div>
+  <div class="niche-filters" id="nicheCatFilters"></div>
+  <div class="niche-grid" id="nicheGrid"></div>
+</div>
+
+<!-- ===== REGIONS PAGE ===== -->
+<div id="page-regions" class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:3px">50 High-Yield Target Regions</div>
+      <div style="font-size:11px;color:var(--txt2)">Wealthy secondary markets — low agency competition, high willingness to pay</div>
+    </div>
+    <input id="regionSearch" placeholder="Search regions..." style="width:200px" oninput="renderRegions()">
+  </div>
+  <div class="niche-filters" id="regionCountryFilters"></div>
+  <div class="region-grid" id="regionGrid"></div>
+</div>
+
+<!-- ===== QUERIES PAGE ===== -->
+<div id="page-queries" class="page">
+  <div style="margin-bottom:1rem">
+    <div style="font-size:15px;font-weight:700;margin-bottom:3px">Google Maps Search Query Generator</div>
+    <div style="font-size:11px;color:var(--txt2);margin-bottom:14px">Pick a niche + region to generate targeted search strings for prospecting</div>
+    <div class="fg3">
+      <div>
+        <div class="label">Niche / Industry</div>
+        <select id="q-niche" onchange="genQueries()"><option value="">Select niche...</option></select>
+      </div>
+      <div>
+        <div class="label">Region / City</div>
+        <select id="q-region" onchange="genQueries()"><option value="">Select region...</option></select>
+      </div>
+      <div>
+        <div class="label">Custom City (override)</div>
+        <input id="q-custom" placeholder="e.g. Abuja, Lagos Island..." oninput="genQueries()">
+      </div>
+    </div>
+  </div>
+  <div id="qgenResults"></div>
+</div>
+
+</div><!-- .app -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== DATA =====================
+const NICHES = [
+  // Specialty Exterior & Home
+  {name:"French Drain & Yard Drainage",cat:"Home Exterior",why:"Homeowners panic when yards flood. SEO-optimized landing pages convert high-ticket, highly motivated clients.",ticket:"$3k–$15k jobs"},
+  {name:"Retractable Awning & Motorized Screen Install",cat:"Home Exterior",why:"Luxury visual product. Needs clean portfolio galleries and interactive lead-capture forms.",ticket:"$3k–$15k jobs"},
+  {name:"Crawl Space Encapsulation",cat:"Home Exterior",why:"High-ticket specialty. Homeowners search during mold/real estate inspections — needs trust-building site.",ticket:"$5k–$20k jobs"},
+  {name:"Permanent Holiday & Accent Lighting",cat:"Home Exterior",why:"Fast-growing trend. Needs video landing pages and quote calculators for local demand.",ticket:"High-ticket installs"},
+  {name:"In-Ground Custom Trampoline Install",cat:"Home Exterior",why:"Luxury backyard for wealthy suburban families. Portfolio site showing safety/aesthetics = local expert.",ticket:"Premium luxury"},
+  {name:"Sod Installation & Hydroseeding",cat:"Home Exterior",why:"Before-and-after photo sliders are the primary sales tool. High-ticket quick installs.",ticket:"High-ticket"},
+  {name:"Sea Glass & Terrazzo Restoration",cat:"Home Exterior",why:"Extremely niche restoration. Gallery-forward site establishes authority for historical properties.",ticket:"Premium crafts"},
+  {name:"Residential Dock & Boat Lift Maintenance",cat:"Home Exterior",why:"Affluent waterfront owners. Simple mobile site with service booking form.",ticket:"Affluent market"},
+  // Automotive & Marine
+  {name:"Mobile ADAS Calibration Technician",cat:"Automotive & Marine",why:"B2B collision shops verify certifications online. High-tech mobile service needs professional web presence.",ticket:"B2B recurring"},
+  {name:"Enclosed Vehicle Transport & Classic Car Hauling",cat:"Automotive & Marine",why:"High-end collectors need extreme trust. Premium site with insurance details and testimonials is mandatory.",ticket:"$500–$5k/transport"},
+  {name:"Mobile Alloy Wheel Repair & Curb Rash",cat:"Automotive & Marine",why:"High-volume B2B (dealerships) + B2C. Needs mobile photo-upload quote form.",ticket:"$200–$600/job"},
+  {name:"Oversize Load Escort / Pilot Car Services",cat:"Automotive & Marine",why:"Critical B2B logistical service. Coverage map + credentials site secures long-term contracts.",ticket:"B2B contracts"},
+  {name:"Headlight Restoration & Custom Retrofitting",cat:"Automotive & Marine",why:"Before/after sliders easily sell a $200–$600 service. One-pager converts well.",ticket:"$200–$600/job"},
+  {name:"Boat Shrink Wrapping & Off-Season Storage",cat:"Automotive & Marine",why:"Lucrative seasonal service. Landing page with early-bird booking secures full winter pipeline.",ticket:"Seasonal high-volume"},
+  // B2B Certified Services
+  {name:"Commercial Hood & Kitchen Exhaust Cleaning",cat:"B2B Certified",why:"Mandated by fire codes. B2B site highlighting compliance and certified reporting = easy restaurant wins.",ticket:"Recurring B2B"},
+  {name:"Pallet Recycling & Bulk Brokerage",cat:"B2B Certified",why:"Logistics managers search online. Simple portal with Buy/Sell Pallets + quote request dominates locally.",ticket:"Volume B2B"},
+  {name:"HVAC Test & Balance (TAB) Technicians",cat:"B2B Certified",why:"General contractors search for certified TAB techs to sign off on permits. Certification-forward site wins.",ticket:"Commercial projects"},
+  {name:"Dry Ice Blasting & Industrial Cleaning",cat:"B2B Certified",why:"Satisfying cleaning videos are incredible website assets for factories, auto, and mold remediation.",ticket:"Industrial contracts"},
+  {name:"Ultrasonic Blind & Window Shade Cleaning",cat:"B2B Certified",why:"High-end homeowners and office managers search for safe cleaning. Tech explanation converts.",ticket:"B2B + premium B2C"},
+  {name:"Custom Canvas & Marine Upholstery",cat:"B2B Certified",why:"Visual portfolio-driven sales for wealthy boat owners. Custom covers, bimini tops, outdoor cushions.",ticket:"Premium custom work"},
+  {name:"Grease Trap Pumping & Waste Oil Recycling",cat:"B2B Certified",why:"B2B restaurant service. High local SEO visibility needed for kitchen managers.",ticket:"Recurring B2B"},
+  {name:"Private Utility Locating (GPR)",cat:"B2B Certified",why:"High-urgency mobile search. Private properties not mapped by public lines. Construction/homeowner target.",ticket:"$300–$2k/job"},
+  // Pet & Animal
+  {name:"Mobile Dog Gym (Climate-Controlled Van)",cat:"Pet & Animal",why:"Fast-growing trend. Recurring subscription service needs online scheduling.",ticket:"Monthly subscriptions"},
+  {name:"Exotic Pet & Reptile Boarding",cat:"Pet & Animal",why:"Specialized care specs needed online. Traditional kennels won't take snakes/parrots/reptiles.",ticket:"Premium boarding"},
+  {name:"Koi Pond & Water Feature Builders",cat:"Pet & Animal",why:"High-end hobbyists pay thousands. Stunning galleries + maintenance package pricing convert well.",ticket:"$2k–$30k+ ponds"},
+  {name:"Pigeon & Pest Bird Deterrent Install",cat:"Pet & Animal",why:"Commercial B2B wins via site showcasing historic buildings saved from bird damage.",ticket:"Commercial contracts"},
+  {name:"Equestrian Arena Footing & Grading",cat:"Pet & Animal",why:"Horse owners are protective of animals. Expert site detailing soil science builds instant trust.",ticket:"$5k–$50k arenas"},
+  // Consumer & Lifestyle
+  {name:"Professional Art Hanging & Gallery Wall Install",cat:"Consumer & Lifestyle",why:"Serving interior designers, offices, art collectors. High-aesthetic site = premium positioning.",ticket:"Premium B2B + B2C"},
+  {name:"Mobile Knife & Shears Sharpening Van",cat:"Consumer & Lifestyle",why:"Serving restaurants, hair salons, home cooks. Schedule + stops + booking link = perfect site.",ticket:"Recurring route"},
+  {name:"Specialized Piano Movers",cat:"Consumer & Lifestyle",why:"Standard movers damage pianos. Online quote calculator by piano type converts anxious owners.",ticket:"$300–$800/move"},
+  {name:"Luxury Picnic & Proposal Planners",cat:"Consumer & Lifestyle",why:"Highly photogenic events. Beautiful galleries + package menus + booking calendar = conversions.",ticket:"$300–$2k/event"},
+  {name:"Local Home Stagers for Luxury Real Estate",cat:"Consumer & Lifestyle",why:"Real estate agents search for stagers. Sleek modern grid site = virtual business card.",ticket:"$1k–$5k/staging"},
+  {name:"Radon Mitigation Contractors",cat:"Consumer & Lifestyle",why:"High-urgency during home transactions. Educational content captures local organic search instantly.",ticket:"$800–$2.5k/job"},
+  // Rural & Agricultural
+  {name:"Forestry Mulching & Land Clearing",cat:"Rural & Agricultural",why:"High-ticket heavy machinery. Video of machines in action wins $2k–$10k jobs online.",ticket:"$2k–$10k/job"},
+  {name:"Water Well Pump Repair & Emergency",cat:"Rural & Agricultural",why:"High-urgency local search when rural home loses water. Click-to-call landing page converts instantly.",ticket:"Emergency premium"},
+  {name:"Custom Pole Barn & Barndominium Builders",cat:"Rural & Agricultural",why:"Rural construction boom. Portfolio + interactive quote request form wins high-ticket builds.",ticket:"$30k–$200k+ builds"},
+  {name:"Live Honeybee Removal & Relocation",cat:"Rural & Agricultural",why:"Eco-conscious homeowners want bees saved. Safe extraction photos build great local goodwill.",ticket:"$200–$1k/removal"},
+  {name:"Mobile Livestock Shearing & Hoof Trimming",cat:"Rural & Agricultural",why:"Hobby farms need annual maintenance. Route-booking site schedules multiple farms per region.",ticket:"Route-based recurring"},
+  // Event & Equipment Rental
+  {name:"Bell Tent & Canvas Glamping Rentals",cat:"Event & Rental",why:"Backyard parties and micro-festivals. Inventory booking system + availability calendar needed.",ticket:"$300–$2k/event"},
+  {name:"Portable Hot Tub & Mobile Sauna Rental",cat:"Event & Rental",why:"Trendy weekend delivery service. Simple booking calendar with digital waiver signing.",ticket:"$200–$600/weekend"},
+  {name:"Driveway-Friendly Dumpster Trailer Rental",cat:"Event & Rental",why:"Won't crack driveways unlike roll-offs. Online reservation + flat-rate pricing converts suburbanites.",ticket:"$200–$500/rental"},
+  {name:"Soft Play & Luxury Bounce House Rentals",cat:"Event & Rental",why:"Parents book strictly from clean web galleries. Aesthetic pastel equipment + easy booking.",ticket:"$150–$600/event"},
+  {name:"Silent Disco Equipment Rental Kits",cat:"Event & Rental",why:"E-commerce setup with return shipping turns local inventory into nationwide rental business.",ticket:"$200–$800/kit"},
+  // Health & Restoration
+  {name:"Professional Lice Removal Clinic",cat:"Health & Restoration",why:"Panicked parents search at midnight. Clinical-looking site with clear pricing + instant booking.",ticket:"$150–$400/session"},
+  {name:"Crime Scene & Biohazard Cleaners",cat:"Health & Restoration",why:"Extreme high-trust service. Families/property managers look for absolute professionalism online.",ticket:"$1k–$10k/job"},
+  {name:"Asbestos & Lead Paint Abatement",cat:"Health & Restoration",why:"Regulated service. Site showcasing state licensing, safety equipment, and air-clearance testing.",ticket:"$2k–$20k/project"},
+  {name:"Custom Memorial Monument & Gravestone Carvers",cat:"Health & Restoration",why:"Families browse designs quietly online before speaking to sales. Gallery + customization tool.",ticket:"$500–$5k/monument"},
+  {name:"Architectural Color Consultants",cat:"Health & Restoration",why:"Independent designers for complex projects. High-end minimalist site with stunning exterior palettes.",ticket:"Professional consulting"},
+  {name:"Precision Agriculture Drone Consultants",cat:"Health & Restoration",why:"Crop mapping, thermal imagery, spraying. Tech specs + analytical sample reports close farming clients.",ticket:"$500–$5k/service"},
+];
+
+const REGIONS = [
+  // USA
+  {name:"Flathead Valley, MT",sub:"Kalispell, Whitefish, Columbia Falls",country:"USA",profile:"Massive influx of coastal wealth; luxury home services, custom building, and recreation boom."},
+  {name:"Baldwin County, AL",sub:"Gulf Shores, Foley, Fairhope",country:"USA",profile:"Booming coastal population, heavy retirement income, endless outdoor and home upkeep services."},
+  {name:"Washington County, UT",sub:"St. George, Hurricane",country:"USA",profile:"Rapidly growing desert retirement oasis; massive custom construction, pool, and drainage demands."},
+  {name:"Benton County, AR",sub:"Bentonville, Rogers, Fayetteville",country:"USA",profile:"Extreme corporate wealth spillover (Walmart HQ). High demand for high-end local services."},
+  {name:"Williamson County, TN",sub:"Franklin, Brentwood",country:"USA",profile:"Extremely high household income. Wealthy suburban estates need niche estate management and luxury upgrades."},
+  {name:"Weld County, CO",sub:"Greeley, Firestone",country:"USA",profile:"Massive agricultural and energy wealth corridor experiencing rapid suburban expansion."},
+  {name:"Horry County, SC",sub:"Myrtle Beach, Conway",country:"USA",profile:"One of the fastest-growing tourist and retirement regions in the US; high density of local micro-services."},
+  {name:"Delaware County, OH",sub:"Powell, Dublin, Lewis Center",country:"USA",profile:"High-earning corporate suburbs of Columbus; families buy high-end residential upgrades actively."},
+  {name:"Kootenai County, ID",sub:"Coeur d'Alene, Post Falls",country:"USA",profile:"High-end lake properties, boating niches, and custom builders serving wealthy transplants."},
+  {name:"Forsyth County, GA",sub:"Cumming, Alpharetta",country:"USA",profile:"Rapidly expanding, wealthy Northern Atlanta suburbs with traditional trade-business owners."},
+  {name:"Collin County, TX",sub:"Frisco, McKinney, Celina",country:"USA",profile:"Explosive growth; highly affluent suburbia where premium niche services are highly sought after."},
+  {name:"Loudoun County, VA",sub:"Leesburg, Purcellville",country:"USA",profile:"Highest median household income county in the US; wine country meets high-tech commuter belt."},
+  {name:"Sussex County, DE",sub:"Lewes, Rehoboth Beach",country:"USA",profile:"Low property taxes driving major retirement migration; massive demand for home modification/maintenance."},
+  {name:"Dakota County, MN",sub:"Eagan, Burnsville",country:"USA",profile:"Stable, high-income South Twin Cities suburbs; massive home service and trade ecosystem."},
+  {name:"St. Johns County, FL",sub:"Ponte Vedra Beach, St. Augustine",country:"USA",profile:"Highest median income in Florida; luxury beach home services, yacht care, and outdoor living."},
+  {name:"Deschutes County, OR",sub:"Bend, Redmond",country:"USA",profile:"Outdoor lifestyle hub with high disposable incomes; premium recreational and home specialty services."},
+  {name:"Waukesha County, WI",sub:"Brookfield, Delafield",country:"USA",profile:"Highly affluent Milwaukee suburbs with established, old-school local business owners."},
+  {name:"Gallatin County, MT",sub:"Bozeman",country:"USA",profile:"Highly affluent, tech-meets-mountain-town; premium custom construction and outdoor recreation."},
+  {name:"Montgomery County, TX",sub:"The Woodlands, Conroe",country:"USA",profile:"Rapidly growing, wealthy suburban/lake region north of Houston; massive trade market."},
+  {name:"Lancaster County, PA",sub:"Lancaster, Lititz",country:"USA",profile:"Diverse manufacturing, high-density agriculture, and family-owned specialty trades."},
+  // Canada
+  {name:"Rocky View County, AB",sub:"Cochrane, Springbank",country:"Canada",profile:"Wealthy acreage belt surrounding Calgary; custom builders, horse properties, specialty equipment rentals."},
+  {name:"Simcoe County, ON",sub:"Barrie, Collingwood, Orillia",country:"Canada",profile:"High-end cottage country and growing commuter belt; major market for luxury outdoor trades."},
+  {name:"Central Okanagan, BC",sub:"Kelowna, West Kelowna",country:"Canada",profile:"High retirement and tourism wealth; winery services, custom marine builders, and landscaping."},
+  {name:"Waterloo Region Outskirts, ON",sub:"Elmira, Wilmot",country:"Canada",profile:"Tech hub surrounded by incredibly wealthy, traditional agricultural and custom trade communities."},
+  {name:"Fraser Valley, BC",sub:"Abbotsford, Chilliwack",country:"Canada",profile:"Massive agricultural valley outside Vancouver; independent agricultural services and heavy trades."},
+  {name:"Halton Region, ON",sub:"Oakville, Milton",country:"Canada",profile:"High household income commuter belt; massive target for aesthetic, family-oriented services."},
+  {name:"Grande Prairie, AB",sub:"",country:"Canada",profile:"Heavy industrial/oilfield wealth; high disposable incomes, huge market for mobile automotive and trailer rentals."},
+  {name:"Muskoka District, ON",sub:"",country:"Canada",profile:"Canada's premier cottage country; luxury dock builders, cabin services, and seasonal rental businesses."},
+  {name:"Durham Region, ON",sub:"Whitby, Clarington",country:"Canada",profile:"Fast suburban growth mixed with agricultural land; strong demand for independent trades and services."},
+  {name:"Metro Halifax Outskirts, NS",sub:"Bedford, Dartmouth",country:"Canada",profile:"Atlantic Canada's tech/logistics center; rapid housing growth creating high demand for contractors."},
+  // UK
+  {name:"South Hams, Devon",sub:"",country:"UK",profile:"Coastal Devon; second-home owners, marine trades, premium holiday rentals, and estate management."},
+  {name:"Ribble Valley, Lancashire",sub:"",country:"UK",profile:"High-income rural pocket; premium independent artisans, high-end builders, and specialty leisure."},
+  {name:"Vale of Glamorgan, Wales",sub:"",country:"UK",profile:"Coastal commuter belt for Cardiff; wealthy countryside homes needing premium exterior services."},
+  {name:"Aberdeenshire, Scotland",sub:"Banchory, Stonehaven",country:"UK",profile:"Royal Deeside corridor; oil and gas wealth supporting highly lucrative local trade operations."},
+  {name:"Stratford-on-Avon, Warwickshire",sub:"",country:"UK",profile:"Historic tourism, high property values; major demand for restoration crafts and high-end B2C services."},
+  {name:"Waverley, Surrey",sub:"",country:"UK",profile:"Extremely high-income commuter belt; horse properties, premium garden designers, and lifestyle consultants."},
+  {name:"Harrogate, North Yorkshire",sub:"",country:"UK",profile:"Historic spa town with highly affluent residents; luxury local retail, custom makers, and premium services."},
+  {name:"Cotswold District, Gloucestershire",sub:"",country:"UK",profile:"Premium lifestyle tourism and heritage properties; heritage restoration, stone-masonry, and luxury design."},
+  {name:"Cheshire East",sub:"Wilmslow, Alderley Edge, Knutsford",country:"UK",profile:"'The Golden Triangle' of northern wealth; sports/business elite requiring luxury services."},
+  {name:"New Forest, Hampshire",sub:"",country:"UK",profile:"Coast and forest wealth; private stables, premium yacht yards, and landscape designers."},
+  // Australia
+  {name:"Sunshine Coast, QLD",sub:"Noosa, Buderim",country:"Australia",profile:"High-growth coastal migration; huge demand for marine, home building, and leisure niches."},
+  {name:"Mornington Peninsula, VIC",sub:"",country:"Australia",profile:"Melbourne's holiday playground; luxury rental managers, yacht service, and boutique landscaping."},
+  {name:"Augusta-Margaret River, WA",sub:"",country:"Australia",profile:"Premium viticulture and lifestyle tourism; bespoke furniture, artisanal agriculture, and eco-lodges."},
+  {name:"Surf Coast Shire, VIC",sub:"Torquay, Anglesea",country:"Australia",profile:"Growing commuter/lifestyle coastal hub; active lifestyle brands, high-end builders, and recreational services."},
+  {name:"Hunter Valley, NSW",sub:"Singleton, Cessnock",country:"Australia",profile:"Heavy coal mining wages mixed with premium tourism/vineyards; high-end blue-collar trades."},
+  {name:"Adelaide Hills, SA",sub:"",country:"Australia",profile:"High-income hobby farmers, custom carpenters, and specialty organic agricultural setups."},
+  {name:"Illawarra Outskirts, NSW",sub:"Kiama, Shellharbour",country:"Australia",profile:"Coastal expansion south of Sydney; rapid residential construction and leisure service demand."},
+  {name:"Ballarat, VIC",sub:"",country:"Australia",profile:"Rapidly growing regional inland hub; traditional, older business owners transitioning to digital."},
+  {name:"Gold Coast Hinterland, QLD",sub:"Tamborine Mountain",country:"Australia",profile:"Acreage lifestyle properties; custom structural landscaping, pool building, and niche holiday retreats."},
+  {name:"Huon Valley, TAS",sub:"",country:"Australia",profile:"Creative migration; premium timber boatbuilders, artisanal farmers, and woodworkers selling globally."},
+];
+
+// ===================== LEADS STATE =====================
+const STORE_KEY='leadhunt_v3';
+let leads=JSON.parse(localStorage.getItem(STORE_KEY)||'null')||[
+  {id:1,name:"Mama Cee Kitchen",industry:"Restaurant",phone:"0805 112 3344",whatsapp:"",email:"",website:"www.mamaceekitchen.com",country:"Nigeria",city:"Lagos",area:"Surulere",address:"14 Bode Thomas St",gmaps:"",lastUpdated:"Before 2015",platform:"Blogspot",source:"Google Maps",issues:["Not mobile-friendly","Poor SEO","Outdated design","No contact form","No booking system"],status:"new",notes:"",date:Date.now()-864e5*5},
+  {id:2,name:"Grace Specialist Clinic",industry:"Clinic / Hospital",phone:"0901 887 2211",whatsapp:"",email:"graceclinic@yahoo.com",website:"",country:"Nigeria",city:"Lagos",area:"Ikeja",address:"7 Allen Ave",gmaps:"",lastUpdated:"No website",platform:"No website",source:"Google Maps",issues:["No website","No Google listing"],status:"contacted",notes:"Spoke to receptionist. Call back Friday.",date:Date.now()-864e5*3},
+  {id:3,name:"Royal Events Centre",industry:"Event Centre",phone:"0706 321 9870",whatsapp:"",email:"royalevents@gmail.com",website:"royaleventsng.com",country:"Nigeria",city:"Lagos",area:"Lekki Phase 1",address:"5 Admiralty Way",gmaps:"",lastUpdated:"2019–2021",platform:"WordPress",source:"Instagram",issues:["Not mobile-friendly","Outdated design","No booking system"],status:"new",notes:"",date:Date.now()-864e5*2},
+  {id:4,name:"Brentwood Luxury Picnic Co",industry:"Luxury Picnic & Proposal Planners",phone:"+1 615 887 3341",whatsapp:"",email:"hello@brentwoodpicnic.com",website:"brentwoodpicnic.com",country:"USA",city:"Williamson County, TN",area:"Franklin",address:"",gmaps:"",lastUpdated:"2015–2018",platform:"Wix",source:"Google Maps",issues:["Not mobile-friendly","No booking system","Outdated design","No portfolio/gallery"],status:"new",notes:"Williamson County target — very high income area.",date:Date.now()-864e5},
+  {id:5,name:"Coeur d'Alene Dock Masters",industry:"Residential Dock & Boat Lift Maintenance",phone:"+1 208 556 7723",whatsapp:"",email:"",website:"",country:"USA",city:"Kootenai County, ID",area:"Coeur d'Alene",address:"",gmaps:"",lastUpdated:"No website",platform:"No website",source:"Ugly Site Scraper",issues:["No website","No Google listing","No social media"],status:"new",notes:"Lake property market — affluent transplants.",date:Date.now()-3600000},
+  {id:6,name:"Muskoka Glamping Rentals",industry:"Bell Tent & Canvas Glamping Rentals",phone:"+1 705 881 2234",whatsapp:"",email:"info@muskokaglamping.ca",website:"muskokaglamping.ca",country:"Canada",city:"Muskoka District, ON",area:"Bracebridge",address:"",gmaps:"",lastUpdated:"Before 2015",platform:"Custom/Static",source:"Facebook",issues:["Not mobile-friendly","Very slow loading","No SSL (http://)","No booking system","No portfolio/gallery"],status:"follow-up",notes:"Owner keen — send proposal with booking calendar mockup.",date:Date.now()-864e5*4},
+];
+let activeTab='all',selectedId=null;
+
+function save(){localStorage.setItem(STORE_KEY,JSON.stringify(leads))}
+
+const ISSUE_SCORES={"No website":30,"Not mobile-friendly":15,"Very slow loading":12,"No SSL (http://)":10,"Poor SEO":12,"Broken links/pages":10,"Outdated design":8,"No contact form":7,"No Google listing":10,"No social media":6,"No booking system":9,"No portfolio/gallery":8};
+function score(l){let s=0;(l.issues||[]).forEach(i=>s+=ISSUE_SCORES[i]||5);if(l.lastUpdated==='No website')s+=20;else if(l.lastUpdated==='Before 2015')s+=15;else if(l.lastUpdated==='2015–2018')s+=8;if(!l.email)s-=5;return Math.min(100,Math.max(0,s))}
+function tierColor(s){return s>=80?'var(--acc)':s>=50?'var(--yellow)':'var(--blue)'}
+function tierLabel(s){return s>=80?'🔥 Hot':s>=50?'🌤 Warm':'🧊 Cold'}
+function statusBadge(st){return{new:'b-blue',contacted:'b-yellow','follow-up':'b-green',closed:'b-gray'}[st]||'b-gray'}
+function locationStr(l){return [l.area,l.city,l.country].filter(Boolean).join(', ')||'Location unknown'}
+
+function genPitch(l){
+  const noSite=(l.issues||[]).includes('No website');
+  const name=l.name, src=l.source==='Google Maps'?'Google Maps':'social media';
+  const phone=l.whatsapp||l.phone||'';
+  const loc=locationStr(l);
+  const greeting=`Hi, good day!\n\nI'm Adewumi, a web designer (Pdified). I came across ${name} on ${src} and I was impressed by what you're doing.`;
+  let body='';
+  if(noSite){
+    body=`I noticed ${name} doesn't have a website yet. In today's market, most customers search online before calling or visiting — without a website, you're losing potential clients every day.\n\nI can build you a clean, fast, mobile-friendly website that gets you found on Google and turns visitors into paying customers. Sites start from $400.`;
+  } else {
+    const pts=[];
+    if((l.issues||[]).includes('Not mobile-friendly'))pts.push("it doesn't display properly on mobile phones");
+    if((l.issues||[]).includes('Very slow loading'))pts.push("it loads very slowly — customers leave before it opens");
+    if((l.issues||[]).includes('No SSL (http://)'))pts.push("it's not secure (no HTTPS) — browsers warn visitors it's unsafe");
+    if((l.issues||[]).includes('Poor SEO'))pts.push("it doesn't appear in Google search results");
+    if((l.issues||[]).includes('Outdated design'))pts.push("the design looks outdated and may put clients off");
+    if((l.issues||[]).includes('No booking system'))pts.push("there's no way for clients to book or enquire online");
+    if((l.issues||[]).includes('No portfolio/gallery'))pts.push("your work isn't shown anywhere — clients can't see what you do");
+    if(pts.length===0)pts.push("there's real room to modernise it and make it work harder for your business");
+    body=`I had a look at your current website and spotted a few things that may be costing you clients:\n\n${pts.map(p=>`• ${p.charAt(0).toUpperCase()+p.slice(1)}`).join('\n')}\n\nThese are all fixable. I specialise in rebuilding sites like this — fast, mobile, and built to convert.`;
+  }
+  return `${greeting}\n\n${body}\n\nCan I send you a quick free preview of what a new site for ${name} could look like? No obligation at all.\n\nWe serve businesses across ${loc} and globally.\n\nRegards,\nAdewumi — Pdified Web Design\n${phone?'WhatsApp: '+phone:''}`.trim();
+}
+
+// ===================== FORM / LEADS =====================
+function populateIndustryDropdowns(){
+  const cats=[...new Set(NICHES.map(n=>n.cat))];
+  const allNiches=NICHES.map(n=>n.name).sort();
+  const extraIndustries=["Restaurant","Hotel","Clinic / Hospital","School / Academy","Church / Ministry","Law Firm","Real Estate","Salon / Spa","Pharmacy","Event Centre","Supermarket","Auto Dealer","Logistics","Fintech / Finance","Construction","Fashion / Boutique","Other"];
+  const combined=[...new Set([...allNiches,...extraIndustries])].sort();
+  const sel=document.getElementById('f-industry');
+  const filt=document.getElementById('industryFilter');
+  combined.forEach(n=>{
+    sel.innerHTML+=`<option>${n}</option>`;
+    filt.innerHTML+=`<option>${n}</option>`;
+  });
+}
+
+function toggleForm(){
+  const f=document.getElementById('addForm');
+  f.classList.toggle('open');
+  if(f.classList.contains('open'))document.getElementById('f-name').focus();
+}
+
+function addLead(){
+  const name=document.getElementById('f-name').value.trim();
+  const country=document.getElementById('f-country').value;
+  const city=document.getElementById('f-city').value.trim();
+  if(!name){showToast('Business name is required');return}
+  if(!city){showToast('City / region is required');return}
+  const issues=[...document.querySelectorAll('#issueChecks input:checked')].map(x=>x.value);
+  const l={
+    id:Date.now(),name,
+    industry:document.getElementById('f-industry').value||'Other',
+    phone:document.getElementById('f-phone').value,
+    whatsapp:document.getElementById('f-whatsapp').value,
+    email:document.getElementById('f-email').value,
+    website:document.getElementById('f-website').value,
+    country,city,
+    area:document.getElementById('f-area').value,
+    address:document.getElementById('f-address').value,
+    gmaps:document.getElementById('f-gmaps').value,
+    platform:document.getElementById('f-platform').value,
+    lastUpdated:document.getElementById('f-lastupdated').value,
+    source:document.getElementById('f-source').value,
+    issues,status:'new',notes:'',date:Date.now()
+  };
+  leads.unshift(l);save();
+  ['f-name','f-phone','f-whatsapp','f-email','f-website','f-city','f-area','f-address','f-gmaps'].forEach(id=>document.getElementById(id).value='');
+  ['f-industry','f-platform','f-lastupdated','f-country'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  document.querySelectorAll('#issueChecks input').forEach(x=>x.checked=false);
+  document.getElementById('addForm').classList.remove('open');
+  render();showToast('Lead saved! 🎯');
+}
+
+function selectLead(id){
+  selectedId=selectedId===id?null:id;
+  if(!selectedId)document.getElementById('detailPanel').style.display='none';
+  render();
+  if(selectedId)setTimeout(()=>document.getElementById('detailPanel').scrollIntoView({behavior:'smooth',block:'nearest'}),60);
+}
+
+function updateStatus(id,val){const l=leads.find(x=>x.id===id);if(l){l.status=val;save();render()}}
+function updateNotes(id,val){const l=leads.find(x=>x.id===id);if(l){l.notes=val;save()}}
+function deleteLead(id){
+  if(!confirm('Remove this lead?'))return;
+  leads=leads.filter(x=>x.id!==id);
+  if(selectedId===id){selectedId=null;document.getElementById('detailPanel').style.display='none';}
+  save();render();showToast('Lead removed');
+}
+
+function copyPitch(id){
+  const el=document.getElementById('pitch-'+id);
+  if(el)navigator.clipboard.writeText(el.textContent).then(()=>showToast('Pitch copied! 📋')).catch(()=>showToast('Select text manually'));
+}
+
+function exportCSV(){
+  const header='Name,Industry,Phone,WhatsApp,Email,Website,Country,City,Area,Address,Platform,Last Updated,Issues,Score,Tier,Status,Source,Notes,Date';
+  const rows=leads.map(l=>{
+    const s=score(l);
+    return [l.name,l.industry,l.phone,l.whatsapp,l.email,l.website,l.country,l.city,l.area,l.address,l.platform,l.lastUpdated,(l.issues||[]).join('; '),s,tierLabel(s),l.status,l.source,(l.notes||'').replace(/\n/g,' '),new Date(l.date).toLocaleDateString()].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(',');
+  });
+  const blob=new Blob([header+'\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`leadhunt_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  showToast('CSV exported! ⬇');
+}
+
+function setTab(t,el){
+  activeTab=t;selectedId=null;
+  document.getElementById('detailPanel').style.display='none';
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');render();
+}
+
+function filtered(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const ctry=document.getElementById('countryFilter').value;
+  const ind=document.getElementById('industryFilter').value;
+  const src=document.getElementById('sourceFilter').value;
+  const pla=document.getElementById('platformFilter').value;
+  const iss=document.getElementById('issueFilter').value;
+  const sc=document.getElementById('scoreFilter').value;
+  const srt=document.getElementById('sortBy').value;
+  let r=leads.filter(l=>{
+    if(activeTab!=='all'&&l.status!==activeTab)return false;
+    if(q&&!`${l.name} ${l.industry} ${l.area} ${l.city} ${l.country} ${l.address}`.toLowerCase().includes(q))return false;
+    if(ctry&&l.country!==ctry)return false;
+    if(ind&&l.industry!==ind)return false;
+    if(src&&l.source!==src)return false;
+    if(pla&&l.platform!==pla)return false;
+    if(iss&&!(l.issues||[]).includes(iss))return false;
+    if(sc){const s=score(l);if(sc==='hot'&&s<80)return false;if(sc==='warm'&&(s<50||s>=80))return false;if(sc==='cold'&&s>=50)return false}
+    return true;
+  });
+  if(srt==='score-desc')r.sort((a,b)=>score(b)-score(a));
+  else if(srt==='score-asc')r.sort((a,b)=>score(a)-score(b));
+  else if(srt==='name-asc')r.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(srt==='date-desc')r.sort((a,b)=>b.date-a.date);
+  return r;
+}
+
+function renderStats(){
+  const t=leads.length,hot=leads.filter(l=>score(l)>=80).length,act=leads.filter(l=>l.status==='contacted'||l.status==='follow-up').length,cl=leads.filter(l=>l.status==='closed').length;
+  document.getElementById('statsBar').innerHTML=`<div class="stat"><div class="stat-n">${t}</div><div class="stat-l">Total Leads</div></div><div class="stat"><div class="stat-n" style="color:var(--acc)">${hot}</div><div class="stat-l">🔥 Hot Prospects</div></div><div class="stat"><div class="stat-n" style="color:var(--yellow)">${act}</div><div class="stat-l">In Outreach</div></div><div class="stat"><div class="stat-n" style="color:var(--green)">${cl}</div><div class="stat-l">Closed Deals</div></div>`;
+}
+
+function renderDetail(l){
+  const s=score(l),pitch=genPitch(l),wa=(l.whatsapp||l.phone||'').replace(/\D/g,'');
+  const dp=document.getElementById('detailPanel');
+  dp.style.display='block';
+  dp.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+    <div><div class="detail-title">${l.name}</div><div class="detail-sub">${l.industry} · ${locationStr(l)} · via ${l.source}</div></div>
+    <button class="close-btn" onclick="selectedId=null;document.getElementById('detailPanel').style.display='none';render()">×</button>
+  </div>
+  <div class="detail-grid">
+    <div class="detail-field"><div class="field-label">Phone</div><div class="field-val">${l.phone||'—'}</div></div>
+    <div class="detail-field"><div class="field-label">WhatsApp</div><div class="field-val" style="color:var(--green)">${l.whatsapp||l.phone||'—'}</div></div>
+    <div class="detail-field"><div class="field-label">Email</div><div class="field-val">${l.email||'—'}</div></div>
+    <div class="detail-field"><div class="field-label">Website</div><div class="field-val" style="color:var(--blue)">${l.website||'None'}</div></div>
+    <div class="detail-field"><div class="field-label">Platform</div><div class="field-val">${l.platform||'Unknown'}</div></div>
+    <div class="detail-field"><div class="field-label">Last Updated</div><div class="field-val">${l.lastUpdated||'Unknown'}</div></div>
+    <div class="detail-field"><div class="field-label">Country</div><div class="field-val">${l.country||'—'}</div></div>
+    <div class="detail-field"><div class="field-label">City / Region</div><div class="field-val">${l.city||'—'}</div></div>
+    <div class="detail-field"><div class="field-label">Area / District</div><div class="field-val">${l.area||'—'}</div></div>
+  </div>
+  ${l.gmaps?`<div style="margin-bottom:14px"><a href="${l.gmaps}" target="_blank" style="font-size:11px;color:var(--blue)">📍 View on Google Maps →</a></div>`:''}
+  <div style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <div class="section-hd" style="margin:0">Opportunity Score</div>
+      <span style="font-size:18px;font-weight:700;color:${tierColor(s)}">${s}/100</span>
+      <span style="font-size:13px;color:${tierColor(s)}">${tierLabel(s)}</span>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:${s}%;background:${tierColor(s)}"></div></div>
+  </div>
+  <div class="section-hd">Issues Found (${(l.issues||[]).length})</div>
+  <div class="issues-wrap">${(l.issues||[]).length?(l.issues||[]).map(i=>`<div class="issue-item"><div class="dot" style="background:var(--red)"></div><span>${i}</span></div>`).join(''):'<div style="color:var(--txt2);font-size:12px;padding:8px 0">No issues logged</div>'}</div>
+  <div class="section-hd">WhatsApp Pitch Message</div>
+  <div class="pitch-box" id="pitch-${l.id}">${pitch}</div>
+  <div class="pitch-actions">
+    <button class="copy-btn" onclick="copyPitch(${l.id})">📋 Copy Message</button>
+    ${wa?`<a class="wa-link" href="https://wa.me/${wa.startsWith('0')?'234'+wa.slice(1):wa}" target="_blank">Open in WhatsApp →</a>`:''}
+  </div>
+  <div class="section-hd">Notes</div>
+  <textarea class="notes-area" placeholder="Follow-up notes, reminders, meeting times..." oninput="updateNotes(${l.id},this.value)">${l.notes||''}</textarea>
+  <div class="detail-footer">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:11px;color:var(--txt2)">Status:</span>
+      <select class="status-sel" onchange="updateStatus(${l.id},this.value)">
+        <option value="new" ${l.status==='new'?'selected':''}>New</option>
+        <option value="contacted" ${l.status==='contacted'?'selected':''}>Contacted</option>
+        <option value="follow-up" ${l.status==='follow-up'?'selected':''}>Follow-Up</option>
+        <option value="closed" ${l.status==='closed'?'selected':''}>Closed ✓</option>
+      </select>
+    </div>
+    <button class="btn-ghost" style="color:var(--red);border-color:var(--red)" onclick="deleteLead(${l.id})">Remove Lead</button>
+  </div>`;
+}
+
+function render(){
+  renderStats();
+  if(selectedId){const l=leads.find(x=>x.id===selectedId);if(l)renderDetail(l);}
+  const data=filtered();
+  const grid=document.getElementById('leadsGrid');
+  if(!data.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><div style="font-size:14px;font-weight:600">No leads found</div><div style="font-size:12px;margin-top:6px">Add leads above or browse Niches/Regions for targets</div></div>`;return;}
+  grid.innerHTML=data.map(l=>{
+    const s=score(l),circ=2*Math.PI*16;
+    return `<div class="lead-card${selectedId===l.id?' active':''}" onclick="selectLead(${l.id})">
+      <div class="lead-top">
+        <div style="flex:1">
+          <div class="biz-name">${l.name}</div>
+          <div class="biz-sub">${l.industry} · ${locationStr(l)}</div>
+          <div class="badges">
+            <span class="badge" style="background:var(--bg4);color:${tierColor(s)}">${tierLabel(s)} ${s}</span>
+            <span class="badge ${statusBadge(l.status)}">${l.status.toUpperCase()}</span>
+            ${(l.issues||[]).slice(0,2).map(i=>`<span class="badge b-red">${i}</span>`).join('')}
+            ${(l.issues||[]).length>2?`<span class="badge b-gray">+${(l.issues||[]).length-2} more</span>`:''}
+          </div>
+        </div>
+        <svg class="score-ring" viewBox="0 0 40 40" style="margin-left:12px">
+          <circle cx="20" cy="20" r="16" fill="none" stroke="var(--bg4)" stroke-width="3"/>
+          <circle cx="20" cy="20" r="16" fill="none" stroke="${tierColor(s)}" stroke-width="3" stroke-dasharray="${circ}" stroke-dashoffset="${circ*(1-s/100)}" stroke-linecap="round" transform="rotate(-90 20 20)"/>
+          <text x="20" y="24" text-anchor="middle" fill="${tierColor(s)}" font-size="9" font-weight="700" font-family="Courier New">${s}</text>
+        </svg>
+      </div>
+      <div class="lead-meta">
+        <span>📞 ${l.phone||'No phone'}</span>
+        <span>📍 ${locationStr(l)}</span>
+        <span>🌐 ${l.website||'No website'}</span>
+        <span>🔍 ${l.source}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== NICHES PAGE =====================
+let activeCat='All';
+function renderNiches(){
+  const cats=['All',...new Set(NICHES.map(n=>n.cat))];
+  // filters
+  document.getElementById('nicheCatFilters').innerHTML=cats.map(c=>`<button class="niche-filter-btn${activeCat===c?' active':''}" onclick="activeCat='${c}';renderNiches()">${c}</button>`).join('');
+  const q=document.getElementById('nicheSearch').value.toLowerCase();
+  const filtered=NICHES.filter(n=>(activeCat==='All'||n.cat===activeCat)&&(!q||n.name.toLowerCase().includes(q)||n.why.toLowerCase().includes(q)));
+  document.getElementById('nicheGrid').innerHTML=filtered.map((n,i)=>`
+    <div class="niche-card" onclick="prefillNiche('${n.name.replace(/'/g,"\\'")}')">
+      <div class="niche-cat">${n.cat}</div>
+      <div class="niche-name">${n.name}</div>
+      <div class="niche-why">${n.why}</div>
+      <div class="niche-ticket">💰 ${n.ticket}</div>
+      <div style="margin-top:8px"><span style="font-size:10px;color:var(--acc);border:0.5px solid var(--acc);border-radius:4px;padding:2px 8px">+ Add Lead →</span></div>
+    </div>`).join('');
+}
+
+function prefillNiche(name){
+  showPage('leads');
+  document.getElementById('addForm').classList.add('open');
+  setTimeout(()=>{
+    const sel=document.getElementById('f-industry');
+    for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===name){sel.selectedIndex=i;break;}}
+    document.getElementById('f-name').focus();
+    showToast(`Niche pre-filled: ${name}`);
+  },100);
+}
+
+// ===================== REGIONS PAGE =====================
+let activeCountry='All';
+function renderRegions(){
+  const countries=['All','USA','Canada','UK','Australia'];
+  document.getElementById('regionCountryFilters').innerHTML=countries.map(c=>`<button class="niche-filter-btn${activeCountry===c?' active':''}" onclick="activeCountry='${c}';renderRegions()">${c}</button>`).join('');
+  const q=document.getElementById('regionSearch').value.toLowerCase();
+  const filtered=REGIONS.filter(r=>(activeCountry==='All'||r.country===activeCountry)&&(!q||r.name.toLowerCase().includes(q)||r.sub.toLowerCase().includes(q)||r.profile.toLowerCase().includes(q)));
+  document.getElementById('regionGrid').innerHTML=filtered.map(r=>`
+    <div class="region-card" onclick="prefillRegion('${r.name.replace(/'/g,"\\'")}','${r.country}')">
+      <div class="region-country">${r.country}</div>
+      <div class="region-name">${r.name}</div>
+      ${r.sub?`<div style="font-size:10px;color:var(--txt3);margin-bottom:6px">${r.sub}</div>`:''}
+      <div class="region-profile">${r.profile}</div>
+      <div style="margin-top:8px"><span style="font-size:10px;color:var(--blue);border:0.5px solid var(--blue);border-radius:4px;padding:2px 8px">+ Target This Region →</span></div>
+    </div>`).join('');
+}
+
+function prefillRegion(name,country){
+  showPage('leads');
+  document.getElementById('addForm').classList.add('open');
+  setTimeout(()=>{
+    document.getElementById('f-city').value=name;
+    const csel=document.getElementById('f-country');
+    for(let i=0;i<csel.options.length;i++){if(csel.options[i].value===country){csel.selectedIndex=i;break;}}
+    document.getElementById('f-name').focus();
+    showToast(`Region pre-filled: ${name}`);
+  },100);
+}
+
+// ===================== QUERY GENERATOR =====================
+function populateQueryDropdowns(){
+  const qn=document.getElementById('q-niche');
+  const qr=document.getElementById('q-region');
+  NICHES.forEach(n=>qn.innerHTML+=`<option>${n.name}</option>`);
+  REGIONS.forEach(r=>qr.innerHTML+=`<option>${r.name}${r.sub?' ('+r.sub+')':''}</option>`);
+}
+
+function genQueries(){
+  const niche=document.getElementById('q-niche').value;
+  const region=document.getElementById('q-region').value.replace(/\s*\(.*?\)/,'').trim();
+  const custom=document.getElementById('q-custom').value.trim();
+  const loc=custom||region;
+  if(!niche&&!loc){document.getElementById('qgenResults').innerHTML='';return;}
+  const n=niche||'[niche]',l=loc||'[city]';
+  const queries=[
+    `${n} ${l}`,
+    `"${n}" near ${l}`,
+    `best ${n} in ${l}`,
+    `${n} ${l} no website`,
+    `${n} ${l} site:facebook.com`,
+    `"${n}" "${l}" contact email`,
+    `${n} ${l} -site:yelp.com -site:yellowpages.com`,
+    `${l} local business directory ${n}`,
+    `${n} ${l} Google Maps`,
+    `filetype:html "${n}" "${l}" "last modified"`,
+  ];
+  document.getElementById('qgenResults').innerHTML=`
+    <div class="qgen-box">
+      <div class="section-hd" style="margin-bottom:4px">Generated Search Queries</div>
+      <div style="font-size:11px;color:var(--txt2);margin-bottom:12px">Copy any query into Google Maps, Google Search, or Facebook to find prospects</div>
+      <div class="query-list">
+        ${queries.map((q,i)=>`<div class="query-item"><span class="query-text">${q}</span><button class="query-copy" onclick="copyQ(this,'${q.replace(/'/g,"\\'")}')">copy</button></div>`).join('')}
+      </div>
+    </div>
+    <div class="qgen-box">
+      <div class="section-hd" style="margin-bottom:4px">Ugly Site Scraper Settings</div>
+      <div style="font-size:11px;color:var(--txt2);line-height:1.7">
+        <b style="color:var(--txt)">Industry:</b> ${n}<br>
+        <b style="color:var(--txt)">City / Region:</b> ${l}<br>
+        <b style="color:var(--txt)">Filters to apply:</b> Last Updated → Before 2020 · SEO Score → Below 50 · Mobile → No<br>
+        <b style="color:var(--txt)">Sort by:</b> Opportunity Score DESC
+      </div>
+    </div>`;
+}
+
+function copyQ(btn,txt){
+  navigator.clipboard.writeText(txt).then(()=>{btn.textContent='copied!';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='copy';btn.style.color=''},1500)}).catch(()=>showToast('Copy manually'));
+}
+
+// ===================== NAV =====================
+function showPage(id, btnEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(btnEl) btnEl.classList.add('active');
+  else {
+    const btns=document.querySelectorAll('.nav-btn');
+    const map={leads:0,niches:1,regions:2,queries:3};
+    if(map[id]!==undefined) btns[map[id]].classList.add('active');
+  }
+  if(id==='niches')renderNiches();
+  if(id==='regions')renderRegions();
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ===================== INIT =====================
+populateIndustryDropdowns();
+populateQueryDropdowns();
+render();
+</script>
+</body>
+</html>
