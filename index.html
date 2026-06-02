@@ -145,6 +145,9 @@ select option{background:var(--bg2)}
 .preview-table{width:100%;border-collapse:collapse;font-size:11px}
 .preview-table th,.preview-table td{border:0.5px solid var(--border);padding:6px 8px;text-align:left}
 .preview-table th{color:var(--txt2);font-weight:700}
+.search-form{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:20px;margin-bottom:1.5rem;display:none}
+.search-form.open{display:block}
+.search-results-info{font-size:11px;color:var(--txt2);margin-bottom:10px;padding:8px 12px;background:var(--bg3);border-radius:6px}
 
 /* Niche Browser */
 .niche-filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
@@ -202,6 +205,7 @@ select option{background:var(--bg2)}
   <div class="logo">LEAD<span>HUNT</span><sub>Web Design Prospector · Pdified</sub></div>
   <div class="header-actions">
     <button class="btn-ghost" onclick="openProfileModal()">⚙ Your Profile</button>
+    <button class="btn-ghost" onclick="openAdvancedSearch()">🔍 Advanced Search</button>
     <button class="btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
     <button class="btn-sm" onclick="openImportPicker()">⬆ Import CSV</button>
     <button class="btn" onclick="showPage('leads');toggleForm()">+ Add Lead</button>
@@ -319,8 +323,93 @@ select option{background:var(--bg2)}
   </div>
 </div>
 
+<!-- Advanced Search Form -->
+<div class="search-form" id="searchForm">
+  <div class="form-header">
+    <div style="font-size:15px;font-weight:700">🔍 Advanced Search</div>
+    <button class="close-btn" onclick="closeAdvancedSearch()">&times;</button>
+  </div>
+  <div class="fg3">
+    <div><div class="label">Business Name</div><input id="s-name" placeholder="Search by name..."></div>
+    <div><div class="label">Industry</div><input id="s-industry" placeholder="e.g. Restaurant"></div>
+    <div><div class="label">Phone</div><input id="s-phone" placeholder="Any part of phone..."></div>
+  </div>
+  <div class="fg3">
+    <div><div class="label">Email</div><input id="s-email" placeholder="Search email..."></div>
+    <div><div class="label">Website</div><input id="s-website" placeholder="URL or domain..."></div>
+    <div><div class="label">WhatsApp</div><input id="s-whatsapp" placeholder="WhatsApp number..."></div>
+  </div>
+  <div class="fg4">
+    <div><div class="label">Country</div>
+      <select id="s-country">
+        <option value="">Any Country</option>
+        <option>Nigeria</option><option>USA</option><option>Canada</option><option>UK</option><option>Australia</option><option>Other</option>
+      </select>
+    </div>
+    <div><div class="label">City / Region</div><input id="s-city" placeholder="e.g. Lagos"></div>
+    <div><div class="label">Area</div><input id="s-area" placeholder="e.g. Victoria Island"></div>
+    <div><div class="label">Address</div><input id="s-address" placeholder="Street address..."></div>
+  </div>
+  <div class="fg4">
+    <div><div class="label">Platform</div>
+      <select id="s-platform">
+        <option value="">Any Platform</option>
+        <option>No website</option><option>WordPress</option><option>Wix</option><option>Blogspot</option><option>Joomla</option><option>Custom/Static</option><option>Other</option>
+      </select>
+    </div>
+    <div><div class="label">Last Updated</div>
+      <select id="s-lastupdated">
+        <option value="">Any Time</option>
+        <option>No website</option><option>Before 2015</option><option>2015–2018</option><option>2019–2021</option><option>2022+</option>
+      </select>
+    </div>
+    <div><div class="label">Source</div>
+      <select id="s-source">
+        <option value="">Any Source</option>
+        <option>Google Maps</option><option>Facebook</option><option>Instagram</option><option>Referral</option><option>Cold Walk-in</option><option>Ugly Site Scraper</option><option>Other</option>
+      </select>
+    </div>
+    <div><div class="label">Status</div>
+      <select id="s-status">
+        <option value="">Any Status</option>
+        <option value="new">New</option>
+        <option value="contacted">Contacted</option>
+        <option value="follow-up">Follow-Up</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+  </div>
+  <div class="fg2">
+    <div><div class="label">Score Range</div>
+      <select id="s-score">
+        <option value="">Any Score</option>
+        <option value="hot">🔥 Hot (80+)</option>
+        <option value="warm">🌤 Warm (50–79)</option>
+        <option value="cold">🧊 Cold (&lt;50)</option>
+      </select>
+    </div>
+    <div><div class="label">Has Issue</div>
+      <select id="s-issue">
+        <option value="">Any Issue</option>
+        <option>No website</option><option>Not mobile-friendly</option><option>Very slow loading</option>
+        <option>No SSL (http://)</option><option>Poor SEO</option><option>Broken links/pages</option>
+        <option>Outdated design</option><option>No contact form</option><option>No Google listing</option>
+        <option>No social media</option><option>No booking system</option><option>No portfolio/gallery</option>
+      </select>
+    </div>
+  </div>
+  <div><div class="label">Notes contain</div><input id="s-notes" placeholder="Search in notes field..."></div>
+  <div class="form-actions">
+    <button class="btn-ghost" onclick="clearAdvancedSearch()">Clear All</button>
+    <button class="btn-ghost" onclick="closeAdvancedSearch()">Cancel</button>
+    <button class="btn" onclick="applyAdvancedSearch()">🔍 Search</button>
+  </div>
+</div>
+
+<div class="search-results-info" id="searchResultsInfo" style="display:none"></div>
+
 <div class="search-row">
-  <input id="searchInput" placeholder="Search name, industry, area, city, country..." oninput="render()">
+  <input id="searchInput" placeholder="Quick search: name, industry, area, city, country..." oninput="render()">
   <select id="industryFilter" onchange="render()" style="min-width:170px">
     <option value="">All Industries</option>
   </select>
@@ -1219,7 +1308,8 @@ function activeFilterCount(){
     document.getElementById('scoreFilter').value,
     activeTab!=='all'?activeTab:'',
   ];
-  return values.filter(Boolean).length;
+  const advancedCount=Object.keys(advancedSearchCriteria).length;
+  return values.filter(Boolean).length+advancedCount;
 }
 
 function clearFilters(){
@@ -1233,6 +1323,8 @@ function clearFilters(){
   document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
   const allChip=document.querySelector('.chip[data-status="all"]');
   if(allChip)allChip.classList.add('active');
+  advancedSearchCriteria={};
+  document.getElementById('searchResultsInfo').style.display='none';
   render();
 }
 
@@ -1254,6 +1346,7 @@ function filtered(){
     if(pla&&l.platform!==pla)return false;
     if(iss&&!(l.issues||[]).includes(iss))return false;
     if(sc){const s=score(l);if(sc==='hot'&&s<80)return false;if(sc==='warm'&&(s<50||s>=80))return false;if(sc==='cold'&&s>=50)return false}
+    if(!matchesAdvancedSearch(l))return false;
     return true;
   });
   if(srt==='score-desc')r.sort((a,b)=>score(b)-score(a));
@@ -1325,6 +1418,100 @@ function renderDetail(l){
     </div>
     <button class="btn-ghost" style="color:var(--red);border-color:var(--red)" onclick="deleteLead(${l.id})">Remove Lead</button>
   </div>`;
+}
+
+// ===================== ADVANCED SEARCH =====================
+let advancedSearchCriteria={};
+function openAdvancedSearch(){
+  document.getElementById('searchForm').classList.add('open');
+  document.getElementById('s-name').focus();
+}
+function closeAdvancedSearch(){
+  document.getElementById('searchForm').classList.remove('open');
+}
+function clearAdvancedSearch(){
+  ['s-name','s-industry','s-phone','s-email','s-website','s-whatsapp','s-city','s-area','s-address','s-notes'].forEach(id=>document.getElementById(id).value='');
+  ['s-country','s-platform','s-lastupdated','s-source','s-status','s-score','s-issue'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  advancedSearchCriteria={};
+  document.getElementById('searchResultsInfo').style.display='none';
+  render();
+}
+function applyAdvancedSearch(){
+  const criteria={};
+  const name=document.getElementById('s-name').value.trim();
+  const industry=document.getElementById('s-industry').value.trim();
+  const phone=document.getElementById('s-phone').value.trim();
+  const email=document.getElementById('s-email').value.trim();
+  const website=document.getElementById('s-website').value.trim();
+  const whatsapp=document.getElementById('s-whatsapp').value.trim();
+  const country=document.getElementById('s-country').value;
+  const city=document.getElementById('s-city').value.trim();
+  const area=document.getElementById('s-area').value.trim();
+  const address=document.getElementById('s-address').value.trim();
+  const platform=document.getElementById('s-platform').value;
+  const lastupdated=document.getElementById('s-lastupdated').value;
+  const source=document.getElementById('s-source').value;
+  const status=document.getElementById('s-status').value;
+  const scoreFilter=document.getElementById('s-score').value;
+  const issue=document.getElementById('s-issue').value;
+  const notes=document.getElementById('s-notes').value.trim();
+  if(name)criteria.name=name.toLowerCase();
+  if(industry)criteria.industry=industry.toLowerCase();
+  if(phone)criteria.phone=phone;
+  if(email)criteria.email=email.toLowerCase();
+  if(website)criteria.website=website.toLowerCase();
+  if(whatsapp)criteria.whatsapp=whatsapp;
+  if(country)criteria.country=country;
+  if(city)criteria.city=city.toLowerCase();
+  if(area)criteria.area=area.toLowerCase();
+  if(address)criteria.address=address.toLowerCase();
+  if(platform)criteria.platform=platform;
+  if(lastupdated)criteria.lastUpdated=lastupdated;
+  if(source)criteria.source=source;
+  if(status)criteria.status=status;
+  if(scoreFilter)criteria.scoreFilter=scoreFilter;
+  if(issue)criteria.issue=issue;
+  if(notes)criteria.notes=notes.toLowerCase();
+  const criteriaCount=Object.keys(criteria).length;
+  if(criteriaCount===0){
+    showToast('Enter at least one search criteria');
+    return;
+  }
+  advancedSearchCriteria=criteria;
+  closeAdvancedSearch();
+  render();
+  const resultsInfo=document.getElementById('searchResultsInfo');
+  const matchCount=filterLeads().length;
+  resultsInfo.textContent=`🔍 Advanced search active: ${matchCount} lead${matchCount===1?'':'s'} found matching ${criteriaCount} criteria`;
+  resultsInfo.style.display='block';
+  showToast(`Found ${matchCount} lead${matchCount===1?'':'s'}`);
+}
+function matchesAdvancedSearch(l){
+  const criteria=advancedSearchCriteria;
+  if(Object.keys(criteria).length===0)return true;
+  if(criteria.name&&!l.name.toLowerCase().includes(criteria.name))return false;
+  if(criteria.industry&&!l.industry.toLowerCase().includes(criteria.industry))return false;
+  if(criteria.phone&&!l.phone.includes(criteria.phone))return false;
+  if(criteria.email&&!l.email.toLowerCase().includes(criteria.email))return false;
+  if(criteria.website&&!l.website.toLowerCase().includes(criteria.website))return false;
+  if(criteria.whatsapp&&!l.whatsapp.includes(criteria.whatsapp))return false;
+  if(criteria.country&&l.country!==criteria.country)return false;
+  if(criteria.city&&!l.city.toLowerCase().includes(criteria.city))return false;
+  if(criteria.area&&!l.area.toLowerCase().includes(criteria.area))return false;
+  if(criteria.address&&!l.address.toLowerCase().includes(criteria.address))return false;
+  if(criteria.platform&&l.platform!==criteria.platform)return false;
+  if(criteria.lastUpdated&&l.lastUpdated!==criteria.lastUpdated)return false;
+  if(criteria.source&&l.source!==criteria.source)return false;
+  if(criteria.status&&l.status!==criteria.status)return false;
+  if(criteria.scoreFilter){
+    const s=score(l);
+    if(criteria.scoreFilter==='hot'&&s<80)return false;
+    if(criteria.scoreFilter==='warm'&&(s<50||s>=80))return false;
+    if(criteria.scoreFilter==='cold'&&s>=50)return false;
+  }
+  if(criteria.issue&&!(l.issues||[]).includes(criteria.issue))return false;
+  if(criteria.notes&&!l.notes.toLowerCase().includes(criteria.notes))return false;
+  return true;
 }
 
 function render(){
