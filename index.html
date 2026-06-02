@@ -40,8 +40,15 @@ select option{background:var(--bg2)}
 .tab.active{border-bottom-color:var(--acc);color:var(--acc)}
 .tab:hover:not(.active){color:var(--txt)}
 .page{display:none}.page.active{display:block}
-.search-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px}
-.filter-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.25rem}
+.search-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;margin-bottom:10px;align-items:center}
+.unified-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.status-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{background:var(--bg3);border:0.5px solid var(--border);border-radius:20px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:6px 12px;transition:all .15s}
+.chip.active,.chip:hover{border-color:var(--acc);color:var(--acc)}
+.more-filters{margin-bottom:1.25rem;display:none;grid-template-columns:repeat(3,1fr);gap:8px}
+.more-filters.open{display:grid}
+.filters-clear{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:7px 12px;display:none}
+.filters-clear.show{display:inline-block}
 .add-form{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:20px;margin-bottom:1.5rem;display:none}
 .add-form.open{display:block}
 .form-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
@@ -64,6 +71,7 @@ select option{background:var(--bg2)}
 .biz-name{font-size:15px;font-weight:700}
 .biz-sub{font-size:11px;color:var(--txt2);margin-top:3px}
 .badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.issue-pills{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
 .badge{border-radius:4px;font-size:10px;font-weight:700;padding:2px 7px;letter-spacing:0.3px}
 .b-red{background:#7f1d1d;color:#fca5a5}
 .b-yellow{background:#713f12;color:#fde68a}
@@ -91,6 +99,22 @@ select option{background:var(--bg2)}
 .copy-btn:hover{color:var(--acc)}
 .wa-link{font-size:11px;color:var(--green);text-decoration:none}
 .wa-link:hover{text-decoration:underline}
+.card-actions{display:flex;gap:8px;margin-top:10px}
+.card-btn{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:6px 10px}
+.card-btn:hover{border-color:var(--green);color:var(--green)}
+.view-toggle{display:flex;gap:6px;align-items:center;margin-bottom:10px}
+.view-btn{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:6px 12px}
+.view-btn.active{border-color:var(--acc);color:var(--acc)}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
+.board-col{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:10px;min-height:280px}
+.board-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:11px;color:var(--txt2);text-transform:uppercase;letter-spacing:.4px}
+.board-count{background:var(--bg4);color:var(--txt);border-radius:12px;padding:2px 8px;font-size:10px}
+.board-list{display:flex;flex-direction:column;gap:8px;max-height:420px;overflow:auto}
+.mini-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px;cursor:grab}
+.mini-card:active{cursor:grabbing}
+.mini-name{font-size:12px;font-weight:700;margin-bottom:3px}
+.mini-meta{font-size:10px;color:var(--txt2)}
+.mini-score{font-size:10px;color:var(--acc);margin-top:5px}
 .notes-area{width:100%;background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt);font-family:inherit;font-size:12px;padding:10px;resize:vertical;min-height:64px}
 .detail-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:0.5px solid var(--border)}
 .status-sel{background:var(--bg3);border:0.5px solid var(--border);border-radius:5px;color:var(--txt);font-family:inherit;font-size:11px;padding:5px 8px}
@@ -98,6 +122,29 @@ select option{background:var(--bg2)}
 .empty-icon{font-size:36px;margin-bottom:10px}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:9px 18px;border-radius:6px;font-size:12px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9999}
 .toast.show{opacity:1}
+.empty-steps{max-width:620px;margin:0 auto;background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:18px;text-align:left}
+.empty-steps h3{font-size:15px;margin-bottom:4px}
+.empty-steps p{font-size:12px;color:var(--txt2);margin-bottom:14px;line-height:1.7}
+.step-list{display:flex;flex-direction:column;gap:8px}
+.step-item{display:flex;justify-content:space-between;align-items:center;background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:12px}
+.step-btn{background:none;border:0.5px solid var(--acc);color:var(--acc);border-radius:5px;cursor:pointer;font-family:inherit;font-size:11px;padding:5px 10px}
+.step-btn:hover{background:var(--acc);color:#fff}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:10000;padding:14px}
+.modal-backdrop.open{display:flex}
+.modal-card{width:min(560px,100%);background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:18px}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:5px}
+.modal-sub{font-size:12px;color:var(--txt2);margin-bottom:14px;line-height:1.7}
+.followup-pill{border-radius:4px;font-size:10px;font-weight:700;padding:2px 7px;letter-spacing:0.3px}
+.followup-future{background:#1e3a5f;color:#93c5fd}
+.followup-overdue{background:#7f1d1d;color:#fca5a5}
+.warn-banner{display:none;align-items:center;justify-content:space-between;gap:10px;background:#3b2f0b;border:0.5px solid #7c5a10;color:#fde68a;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:11px}
+.warn-banner.show{display:flex}
+.warn-actions{display:flex;gap:6px;align-items:center}
+.warn-link{color:#fbbf24;text-decoration:none;font-weight:700}
+.warn-link:hover{text-decoration:underline}
+.preview-table{width:100%;border-collapse:collapse;font-size:11px}
+.preview-table th,.preview-table td{border:0.5px solid var(--border);padding:6px 8px;text-align:left}
+.preview-table th{color:var(--txt2);font-weight:700}
 
 /* Niche Browser */
 .niche-filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
@@ -137,11 +184,14 @@ select option{background:var(--bg2)}
 
 @media(max-width:680px){
   .stats-bar{grid-template-columns:1fr 1fr}
-  .search-row{grid-template-columns:1fr}
-  .filter-row{grid-template-columns:1fr 1fr}
+  .search-row{grid-template-columns:1fr 1fr}
+  .unified-filters{flex-direction:column;align-items:stretch}
+  .more-filters{grid-template-columns:1fr}
+  .board{grid-template-columns:1fr 1fr}
   .fg2,.fg3,.fg4{grid-template-columns:1fr}
   .detail-grid{grid-template-columns:1fr 1fr}
   .niche-grid,.region-grid{grid-template-columns:1fr}
+  .warn-banner{flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
@@ -151,7 +201,9 @@ select option{background:var(--bg2)}
 <div class="header">
   <div class="logo">LEAD<span>HUNT</span><sub>Web Design Prospector · Pdified</sub></div>
   <div class="header-actions">
+    <button class="btn-ghost" onclick="openProfileModal()">⚙ Your Profile</button>
     <button class="btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="btn-sm" onclick="openImportPicker()">⬆ Import CSV</button>
     <button class="btn" onclick="showPage('leads');toggleForm()">+ Add Lead</button>
   </div>
 </div>
@@ -168,6 +220,14 @@ select option{background:var(--bg2)}
 
 <!-- ===== LEADS PAGE ===== -->
 <div id="page-leads" class="page active">
+
+<div class="warn-banner" id="backupBanner">
+  <span>Your data is stored in this browser only — export CSV to keep a backup.</span>
+  <div class="warn-actions">
+    <a href="#" class="warn-link" onclick="event.preventDefault();exportCSV()">Export now</a>
+    <button class="btn-ghost" onclick="dismissBackupBanner()">Dismiss</button>
+  </div>
+</div>
 
 <div class="add-form" id="addForm">
   <div class="form-header">
@@ -220,6 +280,21 @@ select option{background:var(--bg2)}
       </select>
     </div>
   </div>
+  <div class="fg3">
+    <div>
+      <div class="label">Status</div>
+      <select id="f-status" onchange="toggleFollowUpField()">
+        <option value="new">New</option>
+        <option value="contacted">Contacted</option>
+        <option value="follow-up">Follow-Up</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+    <div id="followupWrap" style="display:none">
+      <div class="label">Follow-up date</div>
+      <input id="f-followup" type="date">
+    </div>
+  </div>
   <div><div class="label">Google Maps Link</div><input id="f-gmaps" placeholder="https://maps.google.com/..." style="margin-bottom:12px"></div>
   <div style="margin-bottom:14px">
     <div class="label" style="margin-bottom:8px">Site Issues (check all that apply)</div>
@@ -244,19 +319,10 @@ select option{background:var(--bg2)}
   </div>
 </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="setTab('all',this)">All</button>
-  <button class="tab" onclick="setTab('new',this)">New</button>
-  <button class="tab" onclick="setTab('contacted',this)">Contacted</button>
-  <button class="tab" onclick="setTab('follow-up',this)">Follow-Up</button>
-  <button class="tab" onclick="setTab('closed',this)">Closed ✓</button>
-</div>
-
 <div class="search-row">
   <input id="searchInput" placeholder="Search name, industry, area, city, country..." oninput="render()">
-  <select id="countryFilter" onchange="render()">
-    <option value="">All Countries</option>
-    <option>Nigeria</option><option>USA</option><option>Canada</option><option>UK</option><option>Australia</option>
+  <select id="industryFilter" onchange="render()" style="min-width:170px">
+    <option value="">All Industries</option>
   </select>
   <select id="sortBy" onchange="render()" style="min-width:150px">
     <option value="score-desc">Highest Score</option>
@@ -264,36 +330,56 @@ select option{background:var(--bg2)}
     <option value="name-asc">Name A→Z</option>
     <option value="date-desc">Newest First</option>
   </select>
+  <button class="btn-ghost" id="moreFilterToggle" onclick="toggleMoreFilters()">More filters ▾</button>
 </div>
-<div class="filter-row">
-  <select id="industryFilter" onchange="render()">
-    <option value="">All Industries</option>
+
+<div class="unified-filters">
+  <div class="status-chips" id="statusChips">
+    <button class="chip active" data-status="all" onclick="setTab('all',this)">All</button>
+    <button class="chip" data-status="new" onclick="setTab('new',this)">New</button>
+    <button class="chip" data-status="contacted" onclick="setTab('contacted',this)">Contacted</button>
+    <button class="chip" data-status="follow-up" onclick="setTab('follow-up',this)">Follow-Up</button>
+    <button class="chip" data-status="closed" onclick="setTab('closed',this)">Closed</button>
+  </div>
+  <select id="scoreFilter" onchange="render()" style="min-width:150px">
+    <option value="">Any Score</option>
+    <option value="hot">🔥 Hot (80+)</option>
+    <option value="warm">🌤 Warm (50–79)</option>
+    <option value="cold">🧊 Cold (&lt;50)</option>
   </select>
-  <select id="sourceFilter" onchange="render()">
-    <option value="">All Sources</option>
-    <option>Google Maps</option><option>Facebook</option><option>Instagram</option>
-    <option>Referral</option><option>Cold Walk-in</option><option>Ugly Site Scraper</option>
+  <button id="filtersClear" class="filters-clear" onclick="clearFilters()">Filters (0) ×</button>
+</div>
+
+<div class="more-filters" id="moreFilters">
+  <select id="countryFilter" onchange="render()">
+    <option value="">All Countries</option>
+    <option>Nigeria</option><option>USA</option><option>Canada</option><option>UK</option><option>Australia</option>
   </select>
   <select id="platformFilter" onchange="render()">
     <option value="">All Platforms</option>
     <option>No website</option><option>WordPress</option><option>Wix</option>
     <option>Blogspot</option><option>Joomla</option><option>Custom/Static</option>
   </select>
+  <select id="sourceFilter" onchange="render()">
+    <option value="">All Sources</option>
+    <option>Google Maps</option><option>Facebook</option><option>Instagram</option>
+    <option>Referral</option><option>Cold Walk-in</option><option>Ugly Site Scraper</option>
+  </select>
   <select id="issueFilter" onchange="render()">
     <option value="">Any Issue</option>
     <option>No website</option><option>Not mobile-friendly</option><option>No SSL (http://)</option>
     <option>Poor SEO</option><option>Outdated design</option><option>No booking system</option><option>No portfolio/gallery</option>
   </select>
-  <select id="scoreFilter" onchange="render()">
-    <option value="">Any Score</option>
-    <option value="hot">🔥 Hot (80+)</option>
-    <option value="warm">🌤 Warm (50–79)</option>
-    <option value="cold">🧊 Cold (&lt;50)</option>
-  </select>
+</div>
+
+<div class="view-toggle">
+  <button class="view-btn" id="listViewBtn" onclick="setViewMode('list')">List</button>
+  <button class="view-btn" id="boardViewBtn" onclick="setViewMode('board')">Board</button>
 </div>
 
 <div class="detail-panel" id="detailPanel" style="display:none"></div>
 <div class="leads-grid" id="leadsGrid"></div>
+<div class="board" id="boardView" style="display:none"></div>
 </div>
 
 <!-- ===== NICHES PAGE ===== -->
@@ -437,7 +523,8 @@ select option{background:var(--bg2)}
           <span><b style="color:var(--txt2)">CLOSED ✓</b> → deal won</span>
         </div>
         Use the <b style="color:var(--txt)">Notes</b> field to log call times, what was discussed, and next actions.<br><br>
-        Click <b style="color:var(--txt)">⬇ Export CSV</b> at any time to download all your leads to a spreadsheet.
+        Click <b style="color:var(--txt)">⬇ Export CSV</b> at any time to download all your leads to a spreadsheet.<br><br>
+        To import leads, use <b style="color:var(--txt)">⬆ Import CSV</b> and select a file using the same LeadHunt export column format.
       </div>
     </div>
 
@@ -476,6 +563,64 @@ select option{background:var(--bg2)}
 
 </div><!-- .app -->
 <div class="toast" id="toast"></div>
+<input id="csvImportInput" type="file" accept=".csv" style="display:none" onchange="handleImportFile(event)">
+
+<div class="modal-backdrop" id="profileModal">
+  <div class="modal-card">
+    <div class="form-header">
+      <div>
+        <div class="modal-title">Your profile</div>
+        <div class="modal-sub">LeadHunt uses this identity for generated pitch messages. Set it once and update any time.</div>
+      </div>
+      <button class="close-btn" onclick="closeProfileModal()">×</button>
+    </div>
+    <div class="fg2">
+      <div>
+        <div class="label">Name *</div>
+        <input id="p-name" placeholder="e.g. Adewumi">
+      </div>
+      <div>
+        <div class="label">Brand *</div>
+        <input id="p-brand" placeholder="e.g. Pdified">
+      </div>
+    </div>
+    <div class="fg2">
+      <div>
+        <div class="label">WhatsApp number</div>
+        <input id="p-phone" placeholder="e.g. +2348012345678">
+      </div>
+      <div>
+        <div class="label">Pitch language</div>
+        <select id="p-language">
+          <option>English</option>
+          <option>Pidgin</option>
+          <option>Yoruba</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-ghost" onclick="closeProfileModal()">Cancel</button>
+      <button class="btn" onclick="saveProfileSettings()">Save Profile</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="importPreviewModal">
+  <div class="modal-card">
+    <div class="form-header">
+      <div>
+        <div class="modal-title">CSV import preview</div>
+        <div class="modal-sub" id="importSummary"></div>
+      </div>
+      <button class="close-btn" onclick="closeImportPreview()">×</button>
+    </div>
+    <div id="importPreviewTableWrap"></div>
+    <div class="form-actions">
+      <button class="btn-ghost" onclick="closeImportPreview()">Cancel</button>
+      <button class="btn" onclick="confirmImport()">Import valid rows</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ===================== DATA =====================
@@ -598,6 +743,9 @@ const REGIONS = [
 
 // ===================== LEADS STATE =====================
 const STORE_KEY='leadhunt_v3';
+const PROFILE_KEY='profile';
+const VIEW_KEY='leadhunt_view_mode';
+const WARN_KEY='warnDismissed';
 let leads=JSON.parse(localStorage.getItem(STORE_KEY)||'null')||[
   {id:1,name:"Mama Cee Kitchen",industry:"Restaurant",phone:"0805 112 3344",whatsapp:"",email:"",website:"www.mamaceekitchen.com",country:"Nigeria",city:"Lagos",area:"Surulere",address:"14 Bode Thomas St",gmaps:"",lastUpdated:"Before 2015",platform:"Blogspot",source:"Google Maps",issues:["Not mobile-friendly","Poor SEO","Outdated design","No contact form","No booking system"],status:"new",notes:"",date:Date.now()-864e5*5},
   {id:2,name:"Grace Specialist Clinic",industry:"Clinic / Hospital",phone:"0901 887 2211",whatsapp:"",email:"graceclinic@yahoo.com",website:"",country:"Nigeria",city:"Lagos",area:"Ikeja",address:"7 Allen Ave",gmaps:"",lastUpdated:"No website",platform:"No website",source:"Google Maps",issues:["No website","No Google listing"],status:"contacted",notes:"Spoke to receptionist. Call back Friday.",date:Date.now()-864e5*3},
@@ -607,8 +755,60 @@ let leads=JSON.parse(localStorage.getItem(STORE_KEY)||'null')||[
   {id:6,name:"Muskoka Glamping Rentals",industry:"Bell Tent & Canvas Glamping Rentals",phone:"+1 705 881 2234",whatsapp:"",email:"info@muskokaglamping.ca",website:"muskokaglamping.ca",country:"Canada",city:"Muskoka District, ON",area:"Bracebridge",address:"",gmaps:"",lastUpdated:"Before 2015",platform:"Custom/Static",source:"Facebook",issues:["Not mobile-friendly","Very slow loading","No SSL (http://)","No booking system","No portfolio/gallery"],status:"follow-up",notes:"Owner keen — send proposal with booking calendar mockup.",date:Date.now()-864e5*4},
 ];
 let activeTab='all',selectedId=null;
+let profile=getProfile();
+let viewMode=sessionStorage.getItem(VIEW_KEY)||'list';
+let sortableReady=false;
+let importPreviewState=null;
 
 function save(){localStorage.setItem(STORE_KEY,JSON.stringify(leads))}
+
+function safeParseJSON(raw,fallback){
+  try{return JSON.parse(raw)}catch{return fallback}
+}
+function getProfile(){
+  return safeParseJSON(localStorage.getItem(PROFILE_KEY)||'null',null)||{name:'',brand:'',phone:'',pitchLanguage:'English'};
+}
+function saveProfileData(data){
+  localStorage.setItem(PROFILE_KEY,JSON.stringify(data));
+  profile=data;
+}
+function profileIsComplete(){
+  return !!(profile.name&&profile.name.trim()&&profile.brand&&profile.brand.trim());
+}
+function openProfileModal(required){
+  const modal=document.getElementById('profileModal');
+  document.getElementById('p-name').value=profile.name||'';
+  document.getElementById('p-brand').value=profile.brand||'';
+  document.getElementById('p-phone').value=profile.phone||'';
+  document.getElementById('p-language').value=profile.pitchLanguage||'English';
+  modal.dataset.required=required?'1':'0';
+  modal.classList.add('open');
+}
+function closeProfileModal(){
+  const modal=document.getElementById('profileModal');
+  if(modal.dataset.required==='1'&&!profileIsComplete())return;
+  modal.classList.remove('open');
+  modal.dataset.required='0';
+}
+function saveProfileSettings(){
+  const next={
+    name:document.getElementById('p-name').value.trim(),
+    brand:document.getElementById('p-brand').value.trim(),
+    phone:document.getElementById('p-phone').value.trim(),
+    pitchLanguage:document.getElementById('p-language').value||'English',
+  };
+  if(!next.name||!next.brand){showToast('Name and brand are required');return}
+  saveProfileData(next);
+  closeProfileModal();
+  render();
+  showToast('Profile saved');
+}
+function requireProfile(){
+  if(profileIsComplete())return true;
+  showToast('Complete your profile to generate pitch');
+  openProfileModal(true);
+  return false;
+}
 
 const ISSUE_SCORES={"No website":30,"Not mobile-friendly":15,"Very slow loading":12,"No SSL (http://)":10,"Poor SEO":12,"Broken links/pages":10,"Outdated design":8,"No contact form":7,"No Google listing":10,"No social media":6,"No booking system":9,"No portfolio/gallery":8};
 function score(l){let s=0;(l.issues||[]).forEach(i=>s+=ISSUE_SCORES[i]||5);if(l.lastUpdated==='No website')s+=20;else if(l.lastUpdated==='Before 2015')s+=15;else if(l.lastUpdated==='2015–2018')s+=8;if(!l.email)s-=5;return Math.min(100,Math.max(0,s))}
@@ -618,11 +818,19 @@ function statusBadge(st){return{new:'b-blue',contacted:'b-yellow','follow-up':'b
 function locationStr(l){return [l.area,l.city,l.country].filter(Boolean).join(', ')||'Location unknown'}
 
 function genPitch(l){
+  const user=profile;
   const noSite=(l.issues||[]).includes('No website');
   const name=l.name, src=l.source==='Google Maps'?'Google Maps':'social media';
-  const phone=l.whatsapp||l.phone||'';
+  const phone=(user.phone||l.whatsapp||l.phone||'').trim();
   const loc=locationStr(l);
-  const greeting=`Hi, good day!\n\nI'm Adewumi, a web designer (Pdified). I came across ${name} on ${src} and I was impressed by what you're doing.`;
+  let greeting='';
+  if((user.pitchLanguage||'English')==='Pidgin'){
+    greeting=`Hi, good day!\n\nMy name na ${user.name} from ${user.brand}. I see ${name} for ${src} and I like wetin una dey do.`;
+  } else if((user.pitchLanguage||'English')==='Yoruba'){
+    greeting=`E kaaro.\n\nOruko mi ni ${user.name} lati ${user.brand}. Mo ri ${name} lori ${src}, mo si feran ise yin.`;
+  } else {
+    greeting=`Hi, good day!\n\nI'm ${user.name}, a web designer from ${user.brand}. I came across ${name} on ${src} and I was impressed by what you're doing.`;
+  }
   let body='';
   if(noSite){
     body=`I noticed ${name} doesn't have a website yet. In today's market, most customers search online before calling or visiting — without a website, you're losing potential clients every day.\n\nI can build you a clean, fast, mobile-friendly website that gets you found on Google and turns visitors into paying customers. Sites start from $400.`;
@@ -638,7 +846,7 @@ function genPitch(l){
     if(pts.length===0)pts.push("there's real room to modernise it and make it work harder for your business");
     body=`I had a look at your current website and spotted a few things that may be costing you clients:\n\n${pts.map(p=>`• ${p.charAt(0).toUpperCase()+p.slice(1)}`).join('\n')}\n\nThese are all fixable. I specialise in rebuilding sites like this — fast, mobile, and built to convert.`;
   }
-  return `${greeting}\n\n${body}\n\nCan I send you a quick free preview of what a new site for ${name} could look like? No obligation at all.\n\nWe serve businesses across ${loc} and globally.\n\nRegards,\nAdewumi — Pdified Web Design\n${phone?'WhatsApp: '+phone:''}`.trim();
+  return `${greeting}\n\n${body}\n\nCan I send you a quick free preview of what a new site for ${name} could look like? No obligation at all.\n\nWe serve businesses across ${loc} and globally.\n\nRegards,\n${user.name} - ${user.brand}\n${phone?'WhatsApp: '+phone:''}`.trim();
 }
 
 // ===================== FORM / LEADS =====================
@@ -668,6 +876,8 @@ function addLead(){
   if(!name){showToast('Business name is required');return}
   if(!city){showToast('City / region is required');return}
   const issues=[...document.querySelectorAll('#issueChecks input:checked')].map(x=>x.value);
+  const status=document.getElementById('f-status').value;
+  const followUpDate=(status==='follow-up'||status==='contacted')?document.getElementById('f-followup').value:'';
   const l={
     id:Date.now(),name,
     industry:document.getElementById('f-industry').value||'Other',
@@ -682,12 +892,13 @@ function addLead(){
     platform:document.getElementById('f-platform').value,
     lastUpdated:document.getElementById('f-lastupdated').value,
     source:document.getElementById('f-source').value,
-    issues,status:'new',notes:'',date:Date.now()
+    issues,status,followUpDate,notes:'',date:Date.now()
   };
   leads.unshift(l);save();
-  ['f-name','f-phone','f-whatsapp','f-email','f-website','f-city','f-area','f-address','f-gmaps'].forEach(id=>document.getElementById(id).value='');
-  ['f-industry','f-platform','f-lastupdated','f-country'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  ['f-name','f-phone','f-whatsapp','f-email','f-website','f-city','f-area','f-address','f-gmaps','f-followup'].forEach(id=>document.getElementById(id).value='');
+  ['f-industry','f-platform','f-lastupdated','f-country','f-status'].forEach(id=>document.getElementById(id).selectedIndex=0);
   document.querySelectorAll('#issueChecks input').forEach(x=>x.checked=false);
+  toggleFollowUpField();
   document.getElementById('addForm').classList.remove('open');
   render();showToast('Lead saved! 🎯');
 }
@@ -699,8 +910,85 @@ function selectLead(id){
   if(selectedId)setTimeout(()=>document.getElementById('detailPanel').scrollIntoView({behavior:'smooth',block:'nearest'}),60);
 }
 
-function updateStatus(id,val){const l=leads.find(x=>x.id===id);if(l){l.status=val;save();render()}}
+function updateStatus(id,val){
+  const l=leads.find(x=>x.id===id);
+  if(l){
+    l.status=val;
+    if((val==='follow-up'||val==='contacted')&&!l.followUpDate)l.followUpDate=isoTomorrow();
+    save();
+    render();
+  }
+}
 function updateNotes(id,val){const l=leads.find(x=>x.id===id);if(l){l.notes=val;save()}}
+function updateFollowUpDate(id,val){
+  const l=leads.find(x=>x.id===id);
+  if(l){
+    l.followUpDate=val||'';
+    save();
+    render();
+  }
+}
+
+function setViewMode(mode){
+  viewMode=mode;
+  sessionStorage.setItem(VIEW_KEY,mode);
+  document.getElementById('listViewBtn').classList.toggle('active',mode==='list');
+  document.getElementById('boardViewBtn').classList.toggle('active',mode==='board');
+  document.getElementById('leadsGrid').style.display=mode==='list'?'flex':'none';
+  document.getElementById('boardView').style.display=mode==='board'?'grid':'none';
+  document.getElementById('detailPanel').style.display=mode==='list'&&selectedId?'block':'none';
+  if(mode==='board')ensureSortableLoaded().then(()=>renderBoard());
+  else render();
+}
+
+function ensureSortableLoaded(){
+  if(sortableReady&&window.Sortable)return Promise.resolve();
+  return new Promise((resolve,reject)=>{
+    if(window.Sortable){sortableReady=true;resolve();return;}
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js';
+    script.onload=()=>{sortableReady=true;resolve();};
+    script.onerror=()=>reject(new Error('Unable to load SortableJS'));
+    document.head.appendChild(script);
+  });
+}
+
+function renderBoard(){
+  const board=document.getElementById('boardView');
+  const statuses=[
+    {key:'new',label:'New'},
+    {key:'contacted',label:'Contacted'},
+    {key:'follow-up',label:'Follow-Up'},
+    {key:'closed',label:'Closed'}
+  ];
+  board.innerHTML=statuses.map(s=>{
+    const col=filtered().filter(l=>l.status===s.key);
+    return `<div class="board-col">
+      <div class="board-hd"><span>${s.label}</span><span class="board-count">${col.length}</span></div>
+      <div class="board-list" data-status="${s.key}">
+        ${col.map(l=>`<div class="mini-card" data-id="${l.id}">
+          <div class="mini-name">${l.name}</div>
+          <div class="mini-meta">${l.city||'Unknown city'}</div>
+          <div class="mini-score">${tierLabel(score(l))} ${score(l)}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  if(window.Sortable){
+    document.querySelectorAll('.board-list').forEach(list=>{
+      new Sortable(list,{
+        group:'pipeline',
+        animation:150,
+        onAdd:evt=>{
+          const id=Number(evt.item.dataset.id);
+          const newStatus=evt.to.dataset.status;
+          updateStatus(id,newStatus);
+        }
+      });
+    });
+  }
+}
 function deleteLead(id){
   if(!confirm('Remove this lead?'))return;
   leads=leads.filter(x=>x.id!==id);
@@ -709,8 +997,30 @@ function deleteLead(id){
 }
 
 function copyPitch(id){
+  if(!requireProfile())return;
   const el=document.getElementById('pitch-'+id);
   if(el)navigator.clipboard.writeText(el.textContent).then(()=>showToast('Pitch copied! 📋')).catch(()=>showToast('Select text manually'));
+}
+
+function normalizedWa(raw){
+  const digits=(raw||'').replace(/\D/g,'');
+  if(!digits)return '';
+  return digits.startsWith('0')?'234'+digits.slice(1):digits;
+}
+
+function sendPitch(id){
+  const lead=leads.find(x=>x.id===id);
+  if(!lead)return;
+  if(!requireProfile())return;
+  const wa=normalizedWa(lead.whatsapp||lead.phone||'');
+  if(!wa){showToast('No WhatsApp number on this lead');return}
+  const pitch=genPitch(lead);
+  navigator.clipboard.writeText(pitch)
+    .then(()=>{
+      window.open(`https://wa.me/${wa}`,'_blank');
+      showToast('Pitch copied and WhatsApp opened');
+    })
+    .catch(()=>showToast('Could not copy pitch'));
 }
 
 function exportCSV(){
@@ -724,11 +1034,206 @@ function exportCSV(){
   showToast('CSV exported! ⬇');
 }
 
+function openImportPicker(){
+  const input=document.getElementById('csvImportInput');
+  input.value='';
+  input.click();
+}
+
+function ensurePapaParseLoaded(){
+  if(window.Papa)return Promise.resolve();
+  return new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js';
+    script.onload=()=>resolve();
+    script.onerror=()=>reject(new Error('Unable to load PapaParse'));
+    document.head.appendChild(script);
+  });
+}
+
+function normalizeHeader(v){
+  return (v||'').toString().trim().toLowerCase().replace(/\s+/g,' ');
+}
+
+function dedupeKey(name,city){
+  return `${(name||'').trim().toLowerCase()}__${(city||'').trim().toLowerCase()}`;
+}
+
+function getRowValue(row, ...keys){
+  for(const key of keys){
+    const matched=Object.keys(row).find(k=>normalizeHeader(k)===normalizeHeader(key));
+    if(matched!==undefined)return (row[matched]||'').toString().trim();
+  }
+  return '';
+}
+
+function mapImportRow(row){
+  const name=getRowValue(row,'Name','Business Name');
+  const city=getRowValue(row,'City','City / Region');
+  if(!name||!city)return {error:'Missing required Name or City'};
+
+  const statusRaw=getRowValue(row,'Status').toLowerCase();
+  const status=['new','contacted','follow-up','closed'].includes(statusRaw)?statusRaw:'new';
+  const issuesRaw=getRowValue(row,'Issues');
+  const issues=issuesRaw?issuesRaw.split(';').map(x=>x.trim()).filter(Boolean):[];
+
+  return {
+    value:{
+      id:Date.now()+Math.floor(Math.random()*100000),
+      name,
+      industry:getRowValue(row,'Industry')||'Other',
+      phone:getRowValue(row,'Phone'),
+      whatsapp:getRowValue(row,'WhatsApp'),
+      email:getRowValue(row,'Email'),
+      website:getRowValue(row,'Website'),
+      country:getRowValue(row,'Country'),
+      city,
+      area:getRowValue(row,'Area'),
+      address:getRowValue(row,'Address'),
+      gmaps:getRowValue(row,'Google Maps Link','Gmaps','gmaps'),
+      platform:getRowValue(row,'Platform'),
+      lastUpdated:getRowValue(row,'Last Updated'),
+      source:getRowValue(row,'Source')||'Import CSV',
+      issues,
+      status,
+      followUpDate:getRowValue(row,'Follow Up Date','Follow-up date','followUpDate'),
+      notes:getRowValue(row,'Notes'),
+      date:Date.now(),
+    }
+  };
+}
+
+async function handleImportFile(event){
+  const file=event.target.files&&event.target.files[0];
+  if(!file)return;
+  if(!file.name.toLowerCase().endsWith('.csv')){showToast('Please select a .csv file');return}
+
+  try{
+    await ensurePapaParseLoaded();
+  }catch{
+    showToast('Could not load CSV parser');
+    return;
+  }
+
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const text=(reader.result||'').toString();
+    const parsed=window.Papa.parse(text,{header:true,skipEmptyLines:true});
+    const rows=parsed.data||[];
+    const existingKeys=new Set(leads.map(l=>dedupeKey(l.name,l.city)));
+    const valid=[];
+    const invalid=[];
+    let duplicateCount=0;
+
+    rows.forEach((row,index)=>{
+      const mapped=mapImportRow(row);
+      if(mapped.error){invalid.push({row:index+2,error:mapped.error});return;}
+      const key=dedupeKey(mapped.value.name,mapped.value.city);
+      if(existingKeys.has(key)){duplicateCount++;return;}
+      existingKeys.add(key);
+      valid.push(mapped.value);
+    });
+
+    importPreviewState={
+      rowsFound:rows.length,
+      columnsMatched:Object.keys(rows[0]||{}).length,
+      valid,
+      invalid,
+      duplicateCount,
+      parseErrors:(parsed.errors||[]).length,
+      sample:valid.slice(0,8),
+    };
+    showImportPreview();
+  };
+  reader.onerror=()=>showToast('Could not read CSV file');
+  reader.readAsText(file);
+}
+
+function showImportPreview(){
+  if(!importPreviewState)return;
+  const s=importPreviewState;
+  const errs=s.invalid.length+s.parseErrors;
+  document.getElementById('importSummary').textContent=`Rows found: ${s.rowsFound} | Columns matched: ${s.columnsMatched} | Valid: ${s.valid.length} | Duplicates skipped: ${s.duplicateCount} | Rows with errors: ${errs}`;
+  const rows=s.sample.map(r=>`<tr><td>${r.name}</td><td>${r.city}</td><td>${r.industry||'Other'}</td><td>${r.status}</td></tr>`).join('');
+  document.getElementById('importPreviewTableWrap').innerHTML=`
+    <table class="preview-table">
+      <thead><tr><th>Name</th><th>City</th><th>Industry</th><th>Status</th></tr></thead>
+      <tbody>${rows||'<tr><td colspan="4">No valid rows to import</td></tr>'}</tbody>
+    </table>
+    ${s.invalid.length?`<div style="margin-top:8px;font-size:11px;color:var(--red)">Invalid rows skipped at lines: ${s.invalid.slice(0,10).map(x=>x.row).join(', ')}${s.invalid.length>10?'...':''}</div>`:''}
+  `;
+  document.getElementById('importPreviewModal').classList.add('open');
+}
+
+function closeImportPreview(){
+  document.getElementById('importPreviewModal').classList.remove('open');
+}
+
+function confirmImport(){
+  if(!importPreviewState)return;
+  if(!importPreviewState.valid.length){
+    closeImportPreview();
+    showToast('No valid rows to import');
+    return;
+  }
+  leads=[...importPreviewState.valid,...leads];
+  save();
+  closeImportPreview();
+  render();
+  showToast(`Imported ${importPreviewState.valid.length} leads`);
+}
+
+function dismissBackupBanner(){
+  localStorage.setItem(WARN_KEY,'1');
+  renderBackupBanner();
+}
+
+function renderBackupBanner(){
+  const dismissed=localStorage.getItem(WARN_KEY)==='1';
+  const show=leads.length>=20&&!dismissed;
+  document.getElementById('backupBanner').classList.toggle('show',show);
+}
+
 function setTab(t,el){
   activeTab=t;selectedId=null;
   document.getElementById('detailPanel').style.display='none';
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
   el.classList.add('active');render();
+}
+
+function toggleMoreFilters(){
+  const block=document.getElementById('moreFilters');
+  const btn=document.getElementById('moreFilterToggle');
+  const open=block.classList.toggle('open');
+  btn.textContent=open?'More filters ▴':'More filters ▾';
+}
+
+function activeFilterCount(){
+  const values=[
+    document.getElementById('searchInput').value.trim(),
+    document.getElementById('countryFilter').value,
+    document.getElementById('industryFilter').value,
+    document.getElementById('sourceFilter').value,
+    document.getElementById('platformFilter').value,
+    document.getElementById('issueFilter').value,
+    document.getElementById('scoreFilter').value,
+    activeTab!=='all'?activeTab:'',
+  ];
+  return values.filter(Boolean).length;
+}
+
+function clearFilters(){
+  document.getElementById('searchInput').value='';
+  ['countryFilter','industryFilter','sourceFilter','platformFilter','issueFilter','scoreFilter','sortBy'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(id==='sortBy')el.value='score-desc';
+    else el.value='';
+  });
+  activeTab='all';
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+  const allChip=document.querySelector('.chip[data-status="all"]');
+  if(allChip)allChip.classList.add('active');
+  render();
 }
 
 function filtered(){
@@ -759,12 +1264,17 @@ function filtered(){
 }
 
 function renderStats(){
-  const t=leads.length,hot=leads.filter(l=>score(l)>=80).length,act=leads.filter(l=>l.status==='contacted'||l.status==='follow-up').length,cl=leads.filter(l=>l.status==='closed').length;
-  document.getElementById('statsBar').innerHTML=`<div class="stat"><div class="stat-n">${t}</div><div class="stat-l">Total Leads</div></div><div class="stat"><div class="stat-n" style="color:var(--acc)">${hot}</div><div class="stat-l">🔥 Hot Prospects</div></div><div class="stat"><div class="stat-n" style="color:var(--yellow)">${act}</div><div class="stat-l">In Outreach</div></div><div class="stat"><div class="stat-n" style="color:var(--green)">${cl}</div><div class="stat-l">Closed Deals</div></div>`;
+  const isoToday=todayISO();
+  const t=leads.length;
+  const hot=leads.filter(l=>score(l)>=80).length;
+  const due=leads.filter(l=>l.status==='follow-up'&&l.followUpDate&&l.followUpDate<=isoToday).length;
+  const cl=leads.filter(l=>l.status==='closed').length;
+  document.getElementById('statsBar').innerHTML=`<div class="stat"><div class="stat-n">${t}</div><div class="stat-l">Total Leads</div></div><div class="stat"><div class="stat-n" style="color:var(--acc)">${hot}</div><div class="stat-l">Hot Leads</div></div><div class="stat"><div class="stat-n" style="color:var(--yellow)">${due}</div><div class="stat-l">Follow-ups Due</div></div><div class="stat"><div class="stat-n" style="color:var(--green)">${cl}</div><div class="stat-l">Closed Deals</div></div>`;
 }
 
 function renderDetail(l){
-  const s=score(l),pitch=genPitch(l),wa=(l.whatsapp||l.phone||'').replace(/\D/g,'');
+  const s=score(l),hasProfile=profileIsComplete(),pitch=hasProfile?genPitch(l):'',wa=normalizedWa(l.whatsapp||l.phone||'');
+  const showFollowupControl=l.status==='follow-up'||l.status==='contacted';
   const dp=document.getElementById('detailPanel');
   dp.style.display='block';
   dp.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
@@ -794,15 +1304,16 @@ function renderDetail(l){
   <div class="section-hd">Issues Found (${(l.issues||[]).length})</div>
   <div class="issues-wrap">${(l.issues||[]).length?(l.issues||[]).map(i=>`<div class="issue-item"><div class="dot" style="background:var(--red)"></div><span>${i}</span></div>`).join(''):'<div style="color:var(--txt2);font-size:12px;padding:8px 0">No issues logged</div>'}</div>
   <div class="section-hd">WhatsApp Pitch Message</div>
-  <div class="pitch-box" id="pitch-${l.id}">${pitch}</div>
+  ${hasProfile?`<div class="pitch-box" id="pitch-${l.id}">${pitch}</div>
   <div class="pitch-actions">
     <button class="copy-btn" onclick="copyPitch(${l.id})">📋 Copy Message</button>
-    ${wa?`<a class="wa-link" href="https://wa.me/${wa.startsWith('0')?'234'+wa.slice(1):wa}" target="_blank">Open in WhatsApp →</a>`:''}
-  </div>
+    ${wa?`<button class="copy-btn" onclick="sendPitch(${l.id})">Send Pitch →</button>`:''}
+  </div>`:`<div class="pitch-box">Complete your profile to generate personalized pitch messages.</div>
+  <div class="pitch-actions"><button class="copy-btn" onclick="openProfileModal(true)">Complete Profile</button></div>`}
   <div class="section-hd">Notes</div>
   <textarea class="notes-area" placeholder="Follow-up notes, reminders, meeting times..." oninput="updateNotes(${l.id},this.value)">${l.notes||''}</textarea>
   <div class="detail-footer">
-    <div style="display:flex;align-items:center;gap:8px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
       <span style="font-size:11px;color:var(--txt2)">Status:</span>
       <select class="status-sel" onchange="updateStatus(${l.id},this.value)">
         <option value="new" ${l.status==='new'?'selected':''}>New</option>
@@ -810,6 +1321,7 @@ function renderDetail(l){
         <option value="follow-up" ${l.status==='follow-up'?'selected':''}>Follow-Up</option>
         <option value="closed" ${l.status==='closed'?'selected':''}>Closed ✓</option>
       </select>
+      ${showFollowupControl?`<span style="font-size:11px;color:var(--txt2)">Follow-up:</span><input class="status-sel" type="date" value="${l.followUpDate||''}" onchange="updateFollowUpDate(${l.id},this.value)">`:''}
     </div>
     <button class="btn-ghost" style="color:var(--red);border-color:var(--red)" onclick="deleteLead(${l.id})">Remove Lead</button>
   </div>`;
@@ -817,12 +1329,40 @@ function renderDetail(l){
 
 function render(){
   renderStats();
+  renderBackupBanner();
+  const activeCount=activeFilterCount();
+  const clearBtn=document.getElementById('filtersClear');
+  clearBtn.textContent=`Filters (${activeCount}) ×`;
+  clearBtn.classList.toggle('show',activeCount>0);
   if(selectedId){const l=leads.find(x=>x.id===selectedId);if(l)renderDetail(l);}
+  if(viewMode==='board'){
+    renderBoard();
+    return;
+  }
   const data=filtered();
   const grid=document.getElementById('leadsGrid');
-  if(!data.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><div style="font-size:14px;font-weight:600">No leads found</div><div style="font-size:12px;margin-top:6px">Add leads above or browse Niches/Regions for targets</div></div>`;return;}
+  if(!leads.length){
+    grid.innerHTML=`<div class="empty"><div class="empty-icon">🎯</div>
+      <div class="empty-steps">
+        <h3>Start your first lead in under a minute</h3>
+        <p>Follow these quick steps to discover a niche, pick a region, and save your first prospect.</p>
+        <div class="step-list">
+          <div class="step-item"><span>1. Browse niches for target businesses</span><button class="step-btn" onclick="showPage('niches')">Open Niche Browser</button></div>
+          <div class="step-item"><span>2. Pick a high-yield region</span><button class="step-btn" onclick="showPage('regions')">Open Region Browser</button></div>
+          <div class="step-item"><span>3. Add your first lead</span><button class="step-btn" onclick="showPage('leads');toggleForm()">Open Add Lead</button></div>
+        </div>
+      </div>
+    </div>`;
+    return;
+  }
+  if(!data.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><div style="font-size:14px;font-weight:600">No leads found</div><div style="font-size:12px;margin-top:6px">Try clearing filters or search terms</div></div>`;return;}
   grid.innerHTML=data.map(l=>{
     const s=score(l),circ=2*Math.PI*16;
+    const followUp=l.followUpDate||'';
+    const showFollowPill=!!followUp;
+    const overdue=showFollowPill&&followUp<=todayISO();
+    const leadIssues=l.issues||[];
+    const hasWa=!!normalizedWa(l.whatsapp||l.phone||'');
     return `<div class="lead-card${selectedId===l.id?' active':''}" onclick="selectLead(${l.id})">
       <div class="lead-top">
         <div style="flex:1">
@@ -831,9 +1371,10 @@ function render(){
           <div class="badges">
             <span class="badge" style="background:var(--bg4);color:${tierColor(s)}">${tierLabel(s)} ${s}</span>
             <span class="badge ${statusBadge(l.status)}">${l.status.toUpperCase()}</span>
-            ${(l.issues||[]).slice(0,2).map(i=>`<span class="badge b-red">${i}</span>`).join('')}
-            ${(l.issues||[]).length>2?`<span class="badge b-gray">+${(l.issues||[]).length-2} more</span>`:''}
+            ${showFollowPill?`<span class="followup-pill ${overdue?'followup-overdue':'followup-future'}">${overdue?'Overdue':'Follow-up '+followUp}</span>`:''}
           </div>
+          ${leadIssues.length?`<div class="issue-pills">${leadIssues.slice(0,4).map(i=>`<span class="badge b-red">${i}</span>`).join('')}${leadIssues.length>4?`<span class="badge b-gray">+${leadIssues.length-4} more</span>`:''}</div>`:''}
+          ${hasWa?`<div class="card-actions"><button class="card-btn" onclick="event.stopPropagation();sendPitch(${l.id})">Send pitch</button></div>`:''}
         </div>
         <svg class="score-ring" viewBox="0 0 40 40" style="margin-left:12px">
           <circle cx="20" cy="20" r="16" fill="none" stroke="var(--bg4)" stroke-width="3"/>
@@ -979,10 +1520,32 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2400);
 }
 
+function todayISO(){
+  const now=new Date();
+  return [now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+}
+function isoTomorrow(){
+  const d=new Date();
+  d.setDate(d.getDate()+1);
+  return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');
+}
+function toggleFollowUpField(){
+  const status=document.getElementById('f-status').value;
+  const wrap=document.getElementById('followupWrap');
+  const input=document.getElementById('f-followup');
+  const show=status==='follow-up'||status==='contacted';
+  wrap.style.display=show?'block':'none';
+  if(show&&!input.value)input.value=isoTomorrow();
+  if(!show)input.value='';
+}
+
 // ===================== INIT =====================
 populateIndustryDropdowns();
 populateQueryDropdowns();
+toggleFollowUpField();
+setViewMode(viewMode);
 render();
+if(!profileIsComplete())openProfileModal(true);
 </script>
 </body>
 </html>
