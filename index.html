@@ -99,9 +99,13 @@ select option{background:var(--bg2)}
 .copy-btn:hover{color:var(--acc)}
 .wa-link{font-size:11px;color:var(--green);text-decoration:none}
 .wa-link:hover{text-decoration:underline}
-.card-actions{display:flex;gap:8px;margin-top:10px}
-.card-btn{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:6px 10px}
+.card-actions{display:flex;gap:6px;margin-top:10px}
+.card-btn{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:6px 10px;transition:all .15s}
 .card-btn:hover{border-color:var(--green);color:var(--green)}
+.card-btn-wa{background:var(--bg3);border:0.5px solid var(--green);color:var(--green);border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;padding:6px 10px;transition:all .15s}
+.card-btn-wa:hover{background:var(--green);color:#fff}
+.card-btn-email{background:var(--bg3);border:0.5px solid var(--blue);color:var(--blue);border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;padding:6px 10px;transition:all .15s}
+.card-btn-email:hover{background:var(--blue);color:#fff}
 .view-toggle{display:flex;gap:6px;align-items:center;margin-bottom:10px}
 .view-btn{background:var(--bg3);border:0.5px solid var(--border);border-radius:6px;color:var(--txt2);cursor:pointer;font-family:inherit;font-size:11px;padding:6px 12px}
 .view-btn.active{border-color:var(--acc);color:var(--acc)}
@@ -148,6 +152,17 @@ select option{background:var(--bg2)}
 .search-form{background:var(--bg2);border:0.5px solid var(--border);border-radius:10px;padding:20px;margin-bottom:1.5rem;display:none}
 .search-form.open{display:block}
 .search-results-info{font-size:11px;color:var(--txt2);margin-bottom:10px;padding:8px 12px;background:var(--bg3);border-radius:6px}
+.target-selector{background:var(--bg3);border:0.5px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px}
+.target-options{display:flex;gap:12px;margin-top:10px}
+.target-radio{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--txt2);padding:8px 12px;background:var(--bg4);border:0.5px solid var(--border);border-radius:6px;transition:all .15s}
+.target-radio:hover{border-color:var(--acc);color:var(--txt)}
+.target-radio input{cursor:pointer}
+.target-radio input:checked{accent-color:var(--acc)}
+.target-details{margin-top:12px;display:none;padding:10px;background:var(--bg4);border-radius:6px;font-size:11px;line-height:1.7}
+.target-details.show{display:block}
+.local-niches{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.niche-tag{background:var(--bg2);border:0.5px solid var(--acc);color:var(--acc);border-radius:4px;padding:4px 9px;font-size:10px;cursor:pointer;transition:all .15s}
+.niche-tag:hover,.niche-tag.active{background:var(--acc);color:#fff}
 
 /* Niche Browser */
 .niche-filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
@@ -329,6 +344,44 @@ select option{background:var(--bg2)}
     <div style="font-size:15px;font-weight:700">🔍 Advanced Search</div>
     <button class="close-btn" onclick="closeAdvancedSearch()">&times;</button>
   </div>
+  
+  <!-- Target Clients Section -->
+  <div class="target-selector">
+    <div class="label" style="margin-bottom:8px">🎯 TARGET CLIENTS</div>
+    <div class="target-options">
+      <label class="target-radio">
+        <input type="radio" name="targetType" value="" checked onchange="updateTargetMode('')">
+        <span>Any Market</span>
+      </label>
+      <label class="target-radio">
+        <input type="radio" name="targetType" value="local" onchange="updateTargetMode('local')">
+        <span>🇳🇬 Local (Lagos)</span>
+      </label>
+      <label class="target-radio">
+        <input type="radio" name="targetType" value="international" onchange="updateTargetMode('international')">
+        <span>🌍 International</span>
+      </label>
+    </div>
+    <div id="localDetails" class="target-details">
+      <div style="color:var(--txt);margin-bottom:6px"><b>High-volume Lagos niches:</b> Massive volume, easy WhatsApp access</div>
+      <div class="local-niches">
+        <button class="niche-tag" onclick="toggleLocalNiche(this,'Restaurant')">🍽 Restaurants</button>
+        <button class="niche-tag" onclick="toggleLocalNiche(this,'Clinic')">🏥 Clinics</button>
+        <button class="niche-tag" onclick="toggleLocalNiche(this,'School')">🎓 Schools</button>
+        <button class="niche-tag" onclick="toggleLocalNiche(this,'Church')">⛪ Churches</button>
+        <button class="niche-tag" onclick="toggleLocalNiche(this,'Event Centre')">🎉 Event Centres</button>
+      </div>
+      <div style="color:var(--txt3);margin-top:8px;font-size:10px">Click tags to filter by specific niches, or leave all unselected to search all Lagos businesses</div>
+    </div>
+    <div id="internationalDetails" class="target-details">
+      <div style="color:var(--txt);margin-bottom:8px"><b>Select a high-yield region:</b></div>
+      <select id="s-region" style="width:100%;font-size:12px">
+        <option value="">-- All International Regions --</option>
+      </select>
+      <div style="color:var(--txt3);margin-top:8px;font-size:10px">Wealthy, underserved markets with high household incomes and few competing agencies</div>
+    </div>
+  </div>
+  
   <div class="fg3">
     <div><div class="label">Business Name</div><input id="s-name" placeholder="Search by name..."></div>
     <div><div class="label">Industry</div><input id="s-industry" placeholder="e.g. Restaurant"></div>
@@ -624,7 +677,11 @@ select option{background:var(--bg2)}
       </div>
       <div style="font-size:12px;color:var(--txt2);line-height:1.8">
         <b style="color:var(--txt)">Two ways to send:</b><br><br>
-        <b style="color:var(--acc)">1. From lead cards:</b> Every lead card shows a <b style="color:var(--txt)">Send pitch</b> button with the score. Click it to instantly open WhatsApp with a pre-written message.<br><br>
+        <b style="color:var(--acc)">1. From lead cards:</b> Every lead card shows pitch buttons based on available contact info:<br>
+        <div style="margin:8px 0 8px 12px;display:flex;flex-direction:column;gap:4px">
+          <span>• <b style="color:var(--green)">📱 WhatsApp</b> button (if phone/WhatsApp available) — copies pitch and opens WhatsApp</span>
+          <span>• <b style="color:var(--blue)">📧 Email</b> button (if email available) — copies pitch and opens your email client</span>
+        </div><br>
         <b style="color:var(--acc)">2. From detail panel:</b> Click any lead card to open full details. A personalized pitch is auto-generated based on:<br>
         <div style="margin:8px 0 8px 12px;display:flex;flex-direction:column;gap:4px">
           <span>• Business name and location</span>
@@ -711,7 +768,7 @@ select option{background:var(--bg2)}
       <div style="color:var(--txt2)"><b style="color:var(--txt)">⬆ Import CSV</b> — bulk lead upload</div>
       <div style="color:var(--txt2)"><b style="color:var(--txt)">⬇ Export CSV</b> — download all leads</div>
       <div style="color:var(--txt2)"><b style="color:var(--txt)">Click lead card</b> — open detail + pitch</div>
-      <div style="color:var(--txt2)"><b style="color:var(--txt)">Send pitch button</b> — quick WhatsApp launch</div>
+      <div style="color:var(--txt2)"><b style="color:var(--txt)">📱 WhatsApp / 📧 Email buttons</b> — quick pitch sending</div>
       <div style="color:var(--txt2)"><b style="color:var(--txt)">List / Board toggle</b> — switch view modes</div>
       <div style="color:var(--txt2)"><b style="color:var(--txt)">Niche card click</b> — pre-fills lead form</div>
       <div style="color:var(--txt2)"><b style="color:var(--txt)">Region card click</b> — pre-fills city/country</div>
@@ -1175,6 +1232,9 @@ function normalizedWa(raw){
 }
 
 function sendPitch(id){
+  sendPitchWhatsApp(id);
+}
+function sendPitchWhatsApp(id){
   const lead=leads.find(x=>x.id===id);
   if(!lead)return;
   if(!requireProfile())return;
@@ -1187,6 +1247,25 @@ function sendPitch(id){
       showToast('Pitch copied and WhatsApp opened');
     })
     .catch(()=>showToast('Could not copy pitch'));
+}
+function sendPitchEmail(id){
+  const lead=leads.find(x=>x.id===id);
+  if(!lead)return;
+  if(!requireProfile())return;
+  const email=lead.email.trim();
+  if(!email){showToast('No email address on this lead');return}
+  const pitch=genPitch(lead);
+  const subject=encodeURIComponent(`Website Design Services for ${lead.name}`);
+  const body=encodeURIComponent(pitch);
+  navigator.clipboard.writeText(pitch)
+    .then(()=>{
+      window.open(`mailto:${email}?subject=${subject}&body=${body}`,'_blank');
+      showToast('Pitch copied and email client opened');
+    })
+    .catch(()=>{
+      window.open(`mailto:${email}?subject=${subject}&body=${body}`,'_blank');
+      showToast('Email client opened');
+    });
 }
 
 function exportCSV(){
@@ -1473,11 +1552,12 @@ function renderDetail(l){
   </div>
   <div class="section-hd">Issues Found (${(l.issues||[]).length})</div>
   <div class="issues-wrap">${(l.issues||[]).length?(l.issues||[]).map(i=>`<div class="issue-item"><div class="dot" style="background:var(--red)"></div><span>${i}</span></div>`).join(''):'<div style="color:var(--txt2);font-size:12px;padding:8px 0">No issues logged</div>'}</div>
-  <div class="section-hd">WhatsApp Pitch Message</div>
+  <div class="section-hd">Pitch Message</div>
   ${hasProfile?`<div class="pitch-box" id="pitch-${l.id}">${pitch}</div>
   <div class="pitch-actions">
     <button class="copy-btn" onclick="copyPitch(${l.id})">📋 Copy Message</button>
-    ${wa?`<button class="copy-btn" onclick="sendPitch(${l.id})">Send Pitch →</button>`:''}
+    ${wa?`<button class="copy-btn" style="border-color:var(--green);color:var(--green)" onclick="sendPitchWhatsApp(${l.id})" title="Send via WhatsApp">📱 WhatsApp</button>`:''}
+    ${l.email?`<button class="copy-btn" style="border-color:var(--blue);color:var(--blue)" onclick="sendPitchEmail(${l.id})" title="Send via Email">📧 Email</button>`:''}
   </div>`:`<div class="pitch-box">Complete your profile to generate personalized pitch messages.</div>
   <div class="pitch-actions"><button class="copy-btn" onclick="openProfileModal(true)">Complete Profile</button></div>`}
   <div class="section-hd">Notes</div>
@@ -1499,22 +1579,99 @@ function renderDetail(l){
 
 // ===================== ADVANCED SEARCH =====================
 let advancedSearchCriteria={};
+let selectedLocalNiches=[];
 function openAdvancedSearch(){
+  populateRegionDropdown();
   document.getElementById('searchForm').classList.add('open');
   document.getElementById('s-name').focus();
+}
+function populateRegionDropdown(){
+  const sel=document.getElementById('s-region');
+  if(sel.options.length>1)return; // already populated
+  REGIONS.forEach(r=>{
+    const opt=document.createElement('option');
+    opt.value=r.name;
+    opt.textContent=`${r.name} (${r.country})`;
+    sel.appendChild(opt);
+  });
+}
+function updateTargetMode(mode){
+  document.getElementById('localDetails').classList.toggle('show',mode==='local');
+  document.getElementById('internationalDetails').classList.toggle('show',mode==='international');
+  if(mode==='local'){
+    document.getElementById('s-country').value='Nigeria';
+    document.getElementById('s-city').value='Lagos';
+  } else if(mode==='international'){
+    document.getElementById('s-country').value='';
+    document.getElementById('s-city').value='';
+    document.getElementById('s-region').selectedIndex=0;
+  } else {
+    document.getElementById('s-country').value='';
+    document.getElementById('s-city').value='';
+    document.getElementById('s-region').selectedIndex=0;
+    selectedLocalNiches=[];
+    document.querySelectorAll('.niche-tag').forEach(t=>t.classList.remove('active'));
+  }
+}
+function toggleLocalNiche(btn,niche){
+  btn.classList.toggle('active');
+  const idx=selectedLocalNiches.indexOf(niche);
+  if(idx>-1){
+    selectedLocalNiches.splice(idx,1);
+  } else {
+    selectedLocalNiches.push(niche);
+  }
 }
 function closeAdvancedSearch(){
   document.getElementById('searchForm').classList.remove('open');
 }
 function clearAdvancedSearch(){
   ['s-name','s-industry','s-phone','s-email','s-website','s-whatsapp','s-city','s-area','s-address','s-notes'].forEach(id=>document.getElementById(id).value='');
-  ['s-country','s-platform','s-lastupdated','s-source','s-status','s-score','s-issue'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  ['s-country','s-platform','s-lastupdated','s-source','s-status','s-score','s-issue','s-region'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  document.querySelectorAll('input[name="targetType"]')[0].checked=true;
+  updateTargetMode('');
   advancedSearchCriteria={};
+  selectedLocalNiches=[];
   document.getElementById('searchResultsInfo').style.display='none';
   render();
 }
 function applyAdvancedSearch(){
   const criteria={};
+  
+  // Check target mode
+  const targetMode=document.querySelector('input[name="targetType"]:checked').value;
+  if(targetMode==='local'){
+    criteria.country='Nigeria';
+    criteria.city='lagos';
+    if(selectedLocalNiches.length>0){
+      criteria.localNiches=selectedLocalNiches.map(n=>n.toLowerCase());
+    }
+  } else if(targetMode==='international'){
+    const region=document.getElementById('s-region').value;
+    if(region){
+      criteria.region=region;
+      const regionData=REGIONS.find(r=>r.name===region);
+      if(regionData){
+        criteria.country=regionData.country;
+        // Extract city from region name or sub
+        if(regionData.sub){
+          const cities=regionData.sub.split(',').map(c=>c.trim().toLowerCase());
+          criteria.regionCities=cities;
+        } else {
+          const cityMatch=regionData.name.match(/^(.+?),\s*([A-Z]{2})$/);
+          if(cityMatch){
+            criteria.regionCities=[cityMatch[1].toLowerCase()];
+          } else {
+            criteria.regionCities=[regionData.name.toLowerCase()];
+          }
+        }
+      }
+    } else {
+      // International but no specific region - exclude Nigeria
+      criteria.excludeCountry='Nigeria';
+    }
+  }
+  
   const name=document.getElementById('s-name').value.trim();
   const industry=document.getElementById('s-industry').value.trim();
   const phone=document.getElementById('s-phone').value.trim();
@@ -1566,6 +1723,20 @@ function applyAdvancedSearch(){
 function matchesAdvancedSearch(l){
   const criteria=advancedSearchCriteria;
   if(Object.keys(criteria).length===0)return true;
+  
+  // Target Clients filters
+  if(criteria.excludeCountry&&l.country===criteria.excludeCountry)return false;
+  if(criteria.localNiches&&criteria.localNiches.length>0){
+    const industryMatch=criteria.localNiches.some(n=>l.industry.toLowerCase().includes(n));
+    if(!industryMatch)return false;
+  }
+  if(criteria.regionCities&&criteria.regionCities.length>0){
+    const cityLower=l.city.toLowerCase();
+    const areaLower=l.area.toLowerCase();
+    const cityMatch=criteria.regionCities.some(c=>cityLower.includes(c)||areaLower.includes(c)||c.includes(cityLower));
+    if(!cityMatch)return false;
+  }
+  
   if(criteria.name&&!l.name.toLowerCase().includes(criteria.name))return false;
   if(criteria.industry&&!l.industry.toLowerCase().includes(criteria.industry))return false;
   if(criteria.phone&&!l.phone.includes(criteria.phone))return false;
@@ -1638,7 +1809,7 @@ function render(){
             ${showFollowPill?`<span class="followup-pill ${overdue?'followup-overdue':'followup-future'}">${overdue?'Overdue':'Follow-up '+followUp}</span>`:''}
           </div>
           ${leadIssues.length?`<div class="issue-pills">${leadIssues.slice(0,4).map(i=>`<span class="badge b-red">${i}</span>`).join('')}${leadIssues.length>4?`<span class="badge b-gray">+${leadIssues.length-4} more</span>`:''}</div>`:''}
-          ${hasWa?`<div class="card-actions"><button class="card-btn" onclick="event.stopPropagation();sendPitch(${l.id})">Send pitch</button></div>`:''}
+          ${hasWa||l.email?`<div class="card-actions">${hasWa?`<button class="card-btn-wa" onclick="event.stopPropagation();sendPitchWhatsApp(${l.id})" title="Send via WhatsApp">📱 WhatsApp</button>`:''} ${l.email?`<button class="card-btn-email" onclick="event.stopPropagation();sendPitchEmail(${l.id})" title="Send via Email">📧 Email</button>`:''}</div>`:''}
         </div>
         <svg class="score-ring" viewBox="0 0 40 40" style="margin-left:12px">
           <circle cx="20" cy="20" r="16" fill="none" stroke="var(--bg4)" stroke-width="3"/>
